@@ -22,22 +22,22 @@ class RolePolicy
 
     public function create(User $user): bool
     {
-        return true;
+        return false;
     }
 
     public function update(User $user, Role $role): bool
     {
-        return true;
+        return false;
     }
 
     public function delete(User $user, Role $role): bool
     {
-        return true;
+        return false;
     }
 
     public function restore(User $user, Role $role): bool
     {
-        return true;
+        return false;
     }
 
     public function forceDelete(User $user, Role $role): bool

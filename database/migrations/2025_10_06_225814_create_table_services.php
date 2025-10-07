@@ -7,15 +7,19 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('name');
+            $table->integer('price');
+            $table->integer('duration_minutes');
+            $table->foreignId('empresa_id');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('services');
     }
 };

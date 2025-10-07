@@ -17,6 +17,17 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    protected static function booted()
+    {
+        static::created(function (User $user) {
+            if(!isset($user->role_id)){
+                $user->role_id = 2;
+                $user->save();
+            }
+        });
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *

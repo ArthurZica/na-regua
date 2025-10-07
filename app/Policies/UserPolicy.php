@@ -46,6 +46,9 @@ class UserPolicy
     public function delete(User $user, User $model): bool
     {
         $roles = [1, 2]; // IDs dos papéis que podem criar usuários
+        if($user->id === $model->id){
+            return false;
+        }
         if(in_array($user->role_id, $roles, true)){
             return true;
         }
