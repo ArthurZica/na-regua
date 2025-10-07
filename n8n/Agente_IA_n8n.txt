@@ -1,0 +1,324 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        2528,
+        608
+      ],
+      "id": "bbf3a799-46ca-4061-b090-34f8fc276542",
+      "name": "When chat message received",
+      "webhookId": "8e54da58-bee6-44a0-ab27-1aba8610a742"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=`Você é o Na Régua, barbeiro virtual da Barbearia Estilo Masculino. \n\n## SUA PERSONALIDADE:\n- Barbeiro experiente e descontraído\n- Fala a linguagem do cliente, com girias moderadas\n- Usa emojis de forma natural para dar calor humano\n- Extremamente conhecedor de cortes e estilos masculinos\n- Sempre dá dicas de cuidado com a barba e cabelo\n- Trata todos os clientes como \"mano\" ou \"chefe\" de forma respeitosa\n\n## REGRAS DO ATENDIMENTO:\n1. SEMPRE seja autêntico e genuíno\n2. Use expressões como \"valeu\", \"tranquilo\", \"fechou?\"\n3. Mantenha o humor leve mas profissional\n4. Confirme todos os agendamentos com detalhes\n5. Ofereça sempre um café virtual ☕ no final\n\n## SERVIÇOS DA BARBEARIA:\n- 💇 Corte de cabelo tradicional\n- ✂️ Corte degradê e moderno\n- 🧔 Modelagem e tratamento de barba\n- 💈 Navalha e detalhes precisos\n- 🧴 Relaxamento com toalha quente\n- 🧼 Lavagem com produtos premium\n\n## FORMATO DAS RESPOSTAS:\n🔧 [Solução principal com emoji temático]\n\n📋 [Detalhes importantes]\n\n💡 [Dica extra ou sugestão]\n\n🤝 [Encerramento característico]\n\n## CONTEXTO ATUAL:\nData/hora: ${$now.format('DD/MM/YYYY às HH:mm')}\nCliente: 'chefe'}\nWhatsApp:\nMensagem: {{ $json.chatInput }}\n\n## HISTÓRICO DA CONVERSA:\n${$('Memória da Conversa1').item.json.context}\n\n## SUA MISSÃO:\nResponder ao cliente de forma natural, como um barbeiro de confiança que conversa no WhatsApp!`",
+        "options": {
+          "systemMessage": "={{ `Você é o Cléber, barbeiro virtual da Barbearia Estilo Masculino com 15 anos de experiência. Você fala naturalmente como um profissional de barbearia que atende no WhatsApp:\n\n• Usa expressões: \"e aí chefe\", \"tranquilo mano\", \"fechou?\", \"valeu!\", \"pode deixar\"\n• Conhece todos os cortes: undercut, fade, degradê, social, militar\n• Sabe sobre produtos: pomadas, gel, óleo para barba, finalizadores\n• Oferece sempre um \"café virtual\" no final: ☕\n\nData: ${$now.format('dddd, DD [de] MMMM')}\nHorário: ${$now.format('HH:mm')}\n\nSempre use as ferramentas para agendar, confirmar ou cancelar horários diretamente no Google Calendar. Confirme TUDO com o cliente antes de marcar!` }}",
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        2816,
+        608
+      ],
+      "id": "9874f497-9cdf-4e57-9116-63e596bcab7c",
+      "name": "Agente - Barbeiro Virtual",
+      "alwaysOutputData": true,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        2720,
+        832
+      ],
+      "id": "b486653c-cd8b-49dd-8793-03f86fbb0a2f",
+      "name": "Memória da Conversa1"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Cancele o agendamento na barbearia com essa tool.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2848,
+        832
+      ],
+      "id": "d22a8d2b-16fa-40d2-922d-c94350aa767d",
+      "name": "cancelarAgendamento1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Obtenha a lista de agendamentos, horários disponíveis e clientes agendados.",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "returnAll": true,
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2976,
+        832
+      ],
+      "id": "e021c77c-0761-4e0f-a85a-c0b50164e32f",
+      "name": "verAgendamentos1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Atualize ou edite o agendamento do cliente com essa tool.",
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "updateFields": {
+          "attendeesUi": {
+            "values": {
+              "attendees": [
+                "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Attendees', ``, 'string') }}"
+              ]
+            }
+          },
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID', ``, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3104,
+        832
+      ],
+      "id": "b1e89a51-83f7-4c6d-a444-8b27f800f398",
+      "name": "atualizarAgendamento1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Agende o horário na barbearia com essa tool.",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Attendees', ``, 'string') }}"
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
+          "sendUpdates": "all",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        3232,
+        832
+      ],
+      "id": "5bd6b5e1-1a69-4fd9-9234-4a6fe4ce4855",
+      "name": "agendarHorario1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "if ($input.first().json.output === undefined || $input.first().json.output === '') {\n  return [{ json: { \n    response: '✋ E aí, chefe! Não consegui entender direito. Pode repetir? 🤔\\n\\n🔧 Se for sobre:\\n• ✂️ Agendar horário\\n• 🗓️ Ver disponibilidade\\n• 💈 Preços\\n• ❌ Cancelar\\n\\n🤝 Manda ver que a gente resolve! ☕'\n  } }];\n}\nreturn $input.first();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3248,
+        608
+      ],
+      "id": "6b4be90c-5e90-4b0c-b1da-647f91356a50",
+      "name": "Resposta de Fallback1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2592,
+        832
+      ],
+      "id": "53ad38e9-3cac-4c9c-a200-4c822e2f67fd",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YatACCEanvcSQFIg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Agente - Barbeiro Virtual",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente - Barbeiro Virtual": {
+      "main": [
+        [
+          {
+            "node": "Resposta de Fallback1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memória da Conversa1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente - Barbeiro Virtual",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cancelarAgendamento1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente - Barbeiro Virtual",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verAgendamentos1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente - Barbeiro Virtual",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualizarAgendamento1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente - Barbeiro Virtual",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "agendarHorario1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente - Barbeiro Virtual",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resposta de Fallback1": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente - Barbeiro Virtual",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6112025a44a9975746a08508c1d5bb8cb6ab81a9459e4591d6ec49aad054780d"
+  }
+}
