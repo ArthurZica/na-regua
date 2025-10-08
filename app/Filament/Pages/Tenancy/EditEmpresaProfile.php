@@ -4,6 +4,7 @@ namespace App\Filament\Pages\Tenancy;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Tenancy\EditTenantProfile;
 use Filament\Schemas\Schema;
+use Ysfkaya\FilamentPhoneInput\Forms\PhoneInput;
 
 class EditEmpresaProfile extends EditTenantProfile
 {
@@ -19,7 +20,7 @@ class EditEmpresaProfile extends EditTenantProfile
                 TextInput::make('name')->required()->translateLabel(),
                 TextInput::make('cnpj')->label('CNPJ'),
                 TextInput::make('endereco')->label('Endereço'),
-                TextInput::make('telefone')->tel()->mask('(99) 99999-9999'),
+                PhoneInput::make('telefone'),
             ]);
     }
 }
