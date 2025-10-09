@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Tenancy\EditEmpresaProfile;
 use App\Filament\Pages\Tenancy\RegisterEmpresa;
+use App\Filament\Widgets\CalendarWidget;
 use App\Models\Empresa;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -21,6 +22,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
 
 class BarbeariaPanelProvider extends PanelProvider
 {
@@ -38,6 +40,7 @@ class BarbeariaPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Blue,
             ])
+            ->viteTheme('resources/css/filament/barbearia/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -47,7 +50,15 @@ class BarbeariaPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
+//                CalendarWidget::class
             ])
+//            ->plugin(
+//                FilamentFullCalendarPlugin::make()
+//
+//                    ->selectable()
+//                    ->editable()
+//
+//            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
