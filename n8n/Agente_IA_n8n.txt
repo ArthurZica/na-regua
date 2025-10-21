@@ -2,204 +2,1632 @@
   "nodes": [
     {
       "parameters": {
-        "options": {}
+        "content": "# Agente IA",
+        "height": 80,
+        "width": 196,
+        "color": 4
       },
-      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
-      "typeVersion": 1.3,
+      "id": "5ed38c2d-5b3b-42a3-9806-645df751c046",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
       "position": [
-        2528,
-        608
+        1792,
+        2512
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 492,
+        "width": 692,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1776,
+        2496
       ],
-      "id": "bbf3a799-46ca-4061-b090-34f8fc276542",
-      "name": "When chat message received",
-      "webhookId": "8e54da58-bee6-44a0-ab27-1aba8610a742"
+      "typeVersion": 1,
+      "id": "7461f8e6-5b2c-421e-95d4-b612c9452922",
+      "name": "Sticky Note4"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=`Você é o Na Régua, barbeiro virtual da Barbearia Estilo Masculino. \n\n## SUA PERSONALIDADE:\n- Barbeiro experiente e descontraído\n- Fala a linguagem do cliente, com girias moderadas\n- Usa emojis de forma natural para dar calor humano\n- Extremamente conhecedor de cortes e estilos masculinos\n- Sempre dá dicas de cuidado com a barba e cabelo\n- Trata todos os clientes como \"mano\" ou \"chefe\" de forma respeitosa\n\n## REGRAS DO ATENDIMENTO:\n1. SEMPRE seja autêntico e genuíno\n2. Use expressões como \"valeu\", \"tranquilo\", \"fechou?\"\n3. Mantenha o humor leve mas profissional\n4. Confirme todos os agendamentos com detalhes\n5. Ofereça sempre um café virtual ☕ no final\n\n## SERVIÇOS DA BARBEARIA:\n- 💇 Corte de cabelo tradicional\n- ✂️ Corte degradê e moderno\n- 🧔 Modelagem e tratamento de barba\n- 💈 Navalha e detalhes precisos\n- 🧴 Relaxamento com toalha quente\n- 🧼 Lavagem com produtos premium\n\n## FORMATO DAS RESPOSTAS:\n🔧 [Solução principal com emoji temático]\n\n📋 [Detalhes importantes]\n\n💡 [Dica extra ou sugestão]\n\n🤝 [Encerramento característico]\n\n## CONTEXTO ATUAL:\nData/hora: ${$now.format('DD/MM/YYYY às HH:mm')}\nCliente: 'chefe'}\nWhatsApp:\nMensagem: {{ $json.chatInput }}\n\n## HISTÓRICO DA CONVERSA:\n${$('Memória da Conversa1').item.json.context}\n\n## SUA MISSÃO:\nResponder ao cliente de forma natural, como um barbeiro de confiança que conversa no WhatsApp!`",
+        "text": "={{ $('Mensagem Completa').item.json.mensagem_completa }}",
         "options": {
-          "systemMessage": "={{ `Você é o Cléber, barbeiro virtual da Barbearia Estilo Masculino com 15 anos de experiência. Você fala naturalmente como um profissional de barbearia que atende no WhatsApp:\n\n• Usa expressões: \"e aí chefe\", \"tranquilo mano\", \"fechou?\", \"valeu!\", \"pode deixar\"\n• Conhece todos os cortes: undercut, fade, degradê, social, militar\n• Sabe sobre produtos: pomadas, gel, óleo para barba, finalizadores\n• Oferece sempre um \"café virtual\" no final: ☕\n\nData: ${$now.format('dddd, DD [de] MMMM')}\nHorário: ${$now.format('HH:mm')}\n\nSempre use as ferramentas para agendar, confirmar ou cancelar horários diretamente no Google Calendar. Confirme TUDO com o cliente antes de marcar!` }}",
-          "passthroughBinaryImages": true
+          "systemMessage": "=# Role and Objective\nAssuma o papel de **Na-Regua**, atendente especializado da **Barbearia X**.  \nObjetivo: atender clientes, agendar horários, explicar serviços e converter leads em clientes da barbearia.\n\n# Instructions\n- **Voz**: masculina, descontraída, profissional e acolhedora. **Pode usar emojis moderadamente** 👍✂️\n- **Nome**: peça o nome se faltar e **use sempre o nome real** do cliente.\n- **Uma pergunta por vez**; seja claro e objetivo.\n- **Agenda**: confirme horários disponíveis diretamente quando possível.\n- **Terminologia**: use *corte*, *barba*, *serviços*; **evite** termos muito técnicos.\n- **Escopo**: fale apenas sobre serviços de barbearia, agendamento, preços e produtos. Assuntos fora do escopo → **encaminhar para humano**.\n- **Pagamento**: aceitamos **Pix, cartão e dinheiro**.\n- **Tom**: mantenha sempre profissional mas descontraído, típico de barbearia.\n- **Saudação única** por sessão.\n- **Sobre a Barbearia X**: \"Somos especialistas em cortes modernos, barba tradicional e cuidados masculinos.\"\n- **Transferência para humano**: quando o cliente pedir para falar com humano, encerre o atendimento informando o protocolo 221214.\n\n## Serviços e Preços\n- **Corte de Cabelo**: R$ 40,00\n- **Barba**: R$ 30,00\n- **Combo Corte + Barba**: R$ 60,00\n- **Sobrancelha**: R$ 15,00\n- **Pigmentação**: R$ 80,00\n\n## Horário de Funcionamento\n- Segunda a Sexta: 9h às 19h\n- Sábado: 8h às 17h\n- Domingo: Fechado\n\n### Language & Channel\n- Atenda **somente via chat**, em **português brasileiro**.  \n- Use a data/hora atuais:  \n  `{{ $now.weekdayLong }}, {{ $now.format('dd/MM/yyyy') }}, {{ $now.hour.toString().padStart(2, '0') }}:{{ $now.minute.toString().padStart(2, '0') }}`.\n\n# Reasoning Steps\n1) Saudar e identificar se é cliente novo ou recorrente\n2) Pedir nome se não tiver\n3) Descobrir necessidade: agendamento, orçamento, dúvidas\n4) Explicar serviços e preços conforme necessidade\n5) Confirmar agendamento se for o caso\n6) Encerrar com informações de localização/horário\n7) Perguntar se tem mais alguma dúvida ou pode ajudar emm amis alguma coisa.\n8) **Se cliente pedir para falar com humano**: encerrar com protocolo 221214\n\n# Output Format\n- **Português (Brasil)**\n- Mensagens curtas e objetivas\n- Pode usar emojis moderadamente\n- Listas numeradas apenas quando for solicitado todos os serviços. \n- Uma informação por vez\n- Preços sempre claros\n- **Ao transferir para humano**: incluir protocolo 221214 no final\n\n# Exemplos\n**Cliente:** Oi, preciso cortar o cabelo\n**Na-Regua:** E aí, tudo bem? Sou o Na-Regua da Barbearia X! Qual seu nome?\n\n**Cliente:** Sou o Carlos\n**Na-Regua:** Prazer, Carlos! 😊 Nosso corte é R$ 40,00. Qual dia e horário você prefere?\n\n**Cliente:** Tem vaga hoje às 15h?\n**Na-Regua:** Perfeito! Tenho sim às 15h. Confirma para Carlos - Corte R$ 40,00?\n\n# Tools\n{\n  \"tools\": [\n    {\n      \"name\": \"Cerebro\",\n      \"usage\": \"Use quando o usuário fizer perguntas que não tem a resposta nesse prompt\"\n    },\n    {\n      \"name\": \"criar_reuniao\", \n      \"usage\": \"Use quando precisar agendar uma horário na agenda de atendimentos, sempre colete nome, data e horario. O cliente(e-mail) não vai ser adicionado na reunição, será apenas para controle do horario do estabelecimento. Sempre utilize como título \"{{ $('Dados').item.json.NomeWpp }} - {{ $('Dados').item.json.Telefone }}\". Tempo para cada atendimento: Corte (30min), Barba (25min), Combo (50min), Sobrancelha (15min), Pigmentação (60min)\"\n    },\n    {\n      \"name\": \"reagendar_reuniao\", \n      \"usage\": \"Use quando a pessoa solicitar que mude a data da reunição, reagendar uma reunição com o cliente. Sempre utilize como título \"{{ $('Dados').item.json.NomeWpp }} - {{ $('Dados').item.json.Telefone }}\"\"\n    },\n    {\n      \"name\": \"cancelar_reuniao\", \n      \"usage\": \"Use quando precisar cancelar a reunição com o cliente.\"\n    }\n}\n\n# Final instructions and prompt to think step by step\nAntes de responder, **pense passo a passo** usando os *Reasoning Steps*, **sem revelar sua cadeia de pensamento**.  \nResponda **apenas** a mensagem ao cliente, no **Output Format**, cumprindo **Instructions** e **Sub-categories**.  \nSe estiver fora do escopo ou for sensível, **encaminhe para humano**."
         }
       },
+      "id": "27498b5f-4d3b-4057-91d7-c9e95f0656b8",
+      "name": "Atendente",
       "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 1.7,
+      "typeVersion": 1.6,
       "position": [
-        2816,
-        608
-      ],
-      "id": "9874f497-9cdf-4e57-9116-63e596bcab7c",
-      "name": "Agente - Barbeiro Virtual",
-      "alwaysOutputData": true,
-      "retryOnFail": false
+        1936,
+        2624
+      ]
     },
     {
       "parameters": {
-        "contextWindowLength": 10
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.Telefone }}",
+        "contextWindowLength": 20
       },
-      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
       "typeVersion": 1.3,
       "position": [
-        2720,
-        832
+        1888,
+        2768
       ],
-      "id": "b486653c-cd8b-49dd-8793-03f86fbb0a2f",
-      "name": "Memória da Conversa1"
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Cancele o agendamento na barbearia com essa tool.",
-        "operation": "delete",
-        "calendar": {
-          "__rl": true,
-          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
-          "mode": "list",
-          "cachedResultName": "Automação"
-        },
-        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        2848,
-        832
-      ],
-      "id": "d22a8d2b-16fa-40d2-922d-c94350aa767d",
-      "name": "cancelarAgendamento1",
+      "id": "1916a4f3-3e8a-4dbe-b72f-c2568f6d919b",
+      "name": "Postgres Chat Memory",
       "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "nRGki09fLIlBWYCl",
-          "name": "Google Calendar account"
+        "postgres": {
+          "id": "QzZHeFb97MD0uJzU",
+          "name": "Postgres account"
         }
       }
     },
     {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Obtenha a lista de agendamentos, horários disponíveis e clientes agendados.",
-        "operation": "getAll",
-        "calendar": {
-          "__rl": true,
-          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
-          "mode": "list",
-          "cachedResultName": "Automação"
-        },
-        "returnAll": true,
-        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
-        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        2976,
-        832
-      ],
-      "id": "e021c77c-0761-4e0f-a85a-c0b50164e32f",
-      "name": "verAgendamentos1",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "nRGki09fLIlBWYCl",
-          "name": "Google Calendar account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Atualize ou edite o agendamento do cliente com essa tool.",
-        "operation": "update",
-        "calendar": {
-          "__rl": true,
-          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
-          "mode": "list",
-          "cachedResultName": "Automação"
-        },
-        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
-        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
-        "updateFields": {
-          "attendeesUi": {
-            "values": {
-              "attendees": [
-                "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Attendees', ``, 'string') }}"
-              ]
-            }
-          },
-          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
-          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
-          "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID', ``, 'string') }}",
-          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
-          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
-          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
-        }
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
-      "position": [
-        3104,
-        832
-      ],
-      "id": "b1e89a51-83f7-4c6d-a444-8b27f800f398",
-      "name": "atualizarAgendamento1",
-      "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "nRGki09fLIlBWYCl",
-          "name": "Google Calendar account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "descriptionType": "manual",
-        "toolDescription": "Agende o horário na barbearia com essa tool.",
-        "calendar": {
-          "__rl": true,
-          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
-          "mode": "list",
-          "cachedResultName": "Automação"
-        },
-        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
-        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
-        "additionalFields": {
-          "attendees": [
-            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Attendees', ``, 'string') }}"
-          ],
-          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
-          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
-          "sendUpdates": "all",
-          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
-        }
-      },
-      "type": "n8n-nodes-base.googleCalendarTool",
-      "typeVersion": 1.3,
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
       "position": [
         3232,
-        832
+        2672
       ],
-      "id": "5bd6b5e1-1a69-4fd9-9234-4a6fe4ce4855",
-      "name": "agendarHorario1",
+      "id": "020211bd-74cb-49d1-b22c-83764494ee62",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "defac08a-6745-422b-bb05-90da9f47d91b",
+              "leftValue": "={{ $('Busca Telefone').last().json.values() }}",
+              "rightValue": "",
+              "operator": {
+                "type": "array",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2736,
+        2672
+      ],
+      "id": "53c384fa-65c2-4871-a5f8-949032d95da7",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 412,
+        "width": 1380,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2528,
+        2496
+      ],
+      "typeVersion": 1,
+      "id": "6e139c08-cc56-4e6a-9292-28c5430cbc1a",
+      "name": "Sticky Note54"
+    },
+    {
+      "parameters": {
+        "content": "# Cadastra Chat Supabase",
+        "height": 80,
+        "width": 450,
+        "color": 4
+      },
+      "id": "69dbcfe0-3d85-4011-9a64-f15a935bfa2d",
+      "name": "Sticky Note55",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2544,
+        2512
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "keyValue": "={{ $('Webhook EVO').item.json.body.data.key.remoteJid }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2576,
+        2672
+      ],
+      "id": "33f2d9b7-a22b-468a-a394-1490228427e3",
+      "name": "Busca Telefone",
+      "alwaysOutputData": true,
       "credentials": {
-        "googleCalendarOAuth2Api": {
-          "id": "nRGki09fLIlBWYCl",
-          "name": "Google Calendar account"
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "chats",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now}}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        2560
+      ],
+      "id": "5540ecfb-db06-4bc2-8c1c-d6ea8a3b2076",
+      "name": "Adiciona CHAT supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "if ($input.first().json.output === undefined || $input.first().json.output === '') {\n  return [{ json: { \n    response: '✋ E aí, chefe! Não consegui entender direito. Pode repetir? 🤔\\n\\n🔧 Se for sobre:\\n• ✂️ Agendar horário\\n• 🗓️ Ver disponibilidade\\n• 💈 Preços\\n• ❌ Cancelar\\n\\n🤝 Manda ver que a gente resolve! ☕'\n  } }];\n}\nreturn $input.first();"
+        "operation": "update",
+        "tableId": "chats",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "phone",
+              "condition": "eq",
+              "keyValue": "={{ $('Dados').item.json.Telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "updated_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
       },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3008,
+        2752
+      ],
+      "id": "7754c107-fbc2-4c91-8325-6548d3b27556",
+      "name": "Atualiza CHAT Supabase",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "chat_messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "phone",
+              "fieldValue": "={{ $('Dados').item.json.Telefone }}"
+            },
+            {
+              "fieldId": "bot_message",
+              "fieldValue": "={{ $('Atendente').item.json.output }}"
+            },
+            {
+              "fieldId": "user_message",
+              "fieldValue": "={{ $('Dados').item.json.message.content }}"
+            },
+            {
+              "fieldId": "message_type",
+              "fieldValue": "={{ $('Dados').item.json.body.event }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "nomewpp",
+              "fieldValue": "={{ $('Dados').item.json.NomeWpp }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        3440,
+        2672
+      ],
+      "id": "404aba55-8047-415a-8ef9-fbbcba1b9173",
+      "name": "Cria Histórico Supabase",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $('Dados').item.json.Telefone }}"
+      },
+      "id": "801bfcc6-6bed-4cec-a104-a69b1083493f",
+      "name": "Delete Memory",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        3632,
+        2672
+      ],
+      "credentials": {
+        "redis": {
+          "id": "GfBexlyCILPhL9U0",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Dados').item.json.Telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1904,
+        2784
+      ],
+      "id": "2220a92a-9893-49ff-abdd-62b959e32457",
+      "name": "Supabase",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4a6d9aac-8565-4c58-abe3-8741393a5535",
+              "leftValue": "={{ $json.telefone }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1712,
+        2736
+      ],
+      "id": "53a380b7-633d-4b15-a30c-2b86fb1f9656",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "tableId": "dados_cliente",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "nomewpp",
+              "fieldValue": "={{ $('Dados').item.json.NomeWpp }}"
+            },
+            {
+              "fieldId": "telefone",
+              "fieldValue": "={{ $('Webhook EVO').item.json.body.data.key.remoteJid }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1520,
+        2864
+      ],
+      "id": "f0531f4a-e409-417f-8ec8-7dfdda239d35",
+      "name": "Supabase1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 348,
+        "width": 980,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        752,
+        2624
+      ],
+      "typeVersion": 1,
+      "id": "744d0804-2a45-4905-ba88-abe62f6aede6",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 660,
+        "width": 960,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -288,
+        2512
+      ],
+      "typeVersion": 1,
+      "id": "7ac2278a-49e6-4c06-8eb1-7a9dc237983e",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 440,
+        "width": 596,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1952,
+        2608
+      ],
+      "typeVersion": 1,
+      "id": "05161ae6-3922-4691-b8cf-eece3fe96167",
+      "name": "Sticky Note22"
+    },
+    {
+      "parameters": {
+        "content": "# Cadastrar Lead Supa Base",
+        "height": 80,
+        "width": 500,
+        "color": 4
+      },
+      "id": "07eb987e-89bc-4b19-8c69-c925f6cebed2",
+      "name": "Sticky Note23",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        2624
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 500,
+        "width": 992,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1328,
+        2576
+      ],
+      "typeVersion": 1,
+      "id": "3cfc71bd-d4d4-4206-b33f-3c18d825c48a",
+      "name": "Sticky Note26"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3e949337-89b9-4fcc-a461-45458213b840",
+        "options": {}
+      },
+      "id": "697ce85e-3639-4105-b8f8-01106f01fbbb",
+      "name": "Webhook EVO",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -2368,
+        2784
+      ],
+      "webhookId": "3e949337-89b9-4fcc-a461-45458213b840"
+    },
+    {
+      "parameters": {
+        "content": "# Pausar IA",
+        "height": 80,
+        "width": 216,
+        "color": 4
+      },
+      "id": "ab8e70af-5f43-40c7-9ce0-90285a2458dd",
+      "name": "Sticky Note41",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1312,
+        2608
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 392,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2432,
+        2624
+      ],
+      "typeVersion": 1,
+      "id": "212c1ece-69b8-48f6-92e8-55b8f304ccec",
+      "name": "Sticky Note32"
+    },
+    {
+      "parameters": {
+        "content": "# WEBHOOK & ROTAS",
+        "height": 80,
+        "width": 388,
+        "color": 4
+      },
+      "id": "9f69ecd2-6a28-4433-9b1e-77b24cf2d882",
+      "name": "Sticky Note67",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2416,
+        2640
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "file.png",
+          "mimeType": "image/png"
+        }
+      },
+      "id": "d1eef900-ecfd-4b8f-8d78-252d63f4feff",
+      "name": "Convert to File1",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        3024
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fbcb16cc-acdb-4ed1-a9f7-07a461bbe3a8",
+      "name": "Edit Fields3",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -128,
+        3024
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "ade56c50-1520-4760-8df5-e99617d6d3ad",
+              "leftValue": "={{ $('Webhook EVO').item.json.body.data.message.imageMessage.caption }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "empty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "29ba2da2-6b4e-4021-8030-c720188312fa",
+      "name": "If3",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        352,
+        3024
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.Telefone }}",
+        "messageData": "={{ $('Dados').item.json.message.content }}, {{ $json.content.replace(/\\n/g, \"\\\\n\").replace(/['\"]/g, '').trim()  }}",
+        "tail": true
+      },
+      "id": "1d512efe-9568-4edf-9360-5c08e09073e4",
+      "name": "Redis4",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        512,
+        3040
+      ],
+      "credentials": {
+        "redis": {
+          "id": "GfBexlyCILPhL9U0",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.Telefone }}",
+        "messageData": "={{ $json.content.replace(/\\n/g, \"\\\\n\").replace(/['\"]/g, '').trim()  }}",
+        "tail": true
+      },
+      "id": "8211e874-9d3c-4909-a823-d711209f9380",
+      "name": "Redis5",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        512,
+        2864
+      ],
+      "credentials": {
+        "redis": {
+          "id": "GfBexlyCILPhL9U0",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "52aaf749-fe4f-44e4-880e-15b2bfc027f1",
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "extendedTextMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "e514e613-fd6a-48bd-b0ae-bae2448c810e",
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "conversation",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "audioMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "audio"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "c0e434dd-1268-421d-b81b-3a5e90ed9550",
+                    "leftValue": "={{ $('Webhook EVO').item.json.body.data.messageType }}",
+                    "rightValue": "imageMessage",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "image"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "5dd9e450-7bd1-4518-8cf8-966ff729c2e6",
+      "name": "Switch1",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -224,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Mensagem Picotada",
+        "height": 80,
+        "width": 396,
+        "color": 4
+      },
+      "id": "67d5c8b8-a189-475c-80e8-1325158203bf",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        768,
+        2640
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d5a342e9-585b-42ea-be44-644adae10199",
+              "leftValue": "={{ $json.Redis2 }}",
+              "rightValue": "={{ $json.Redis1 }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "96aab641-5841-48e6-bf26-4e34ddacd344",
+      "name": "Compara Get Memory1",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1392,
+        2768
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.Telefone }}",
+        "messageData": "={{ $('Dados').item.json.message.content }}",
+        "tail": true
+      },
+      "id": "9b40201c-5664-4c41-906f-12c6450ec11e",
+      "name": "Text Memory1",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        512,
+        2544
+      ],
+      "credentials": {
+        "redis": {
+          "id": "GfBexlyCILPhL9U0",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "push",
+        "list": "={{ $('Dados').item.json.Telefone }}",
+        "messageData": "={{ $json.text }}",
+        "tail": true
+      },
+      "id": "69c7062e-bf32-4a12-813d-0b795132d764",
+      "name": "Audio Memory1",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        512,
+        2704
+      ],
+      "credentials": {
+        "redis": {
+          "id": "GfBexlyCILPhL9U0",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f336a1ff-e577-489d-a739-1eb8bd509245",
+              "name": "Redis2",
+              "value": "={{ $json.propertyName }}",
+              "type": "string"
+            },
+            {
+              "id": "946d1420-e379-46e3-8fcd-3816340fbabb",
+              "name": "Redis1",
+              "value": "={{ $('Get Memory 1').item.json.propertyName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a6c0913-2c02-4220-9c54-b596f064133e",
+      "name": "Edit Fields8",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1232,
+        2768
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 40
+      },
+      "id": "f8f872f4-58cd-4fd6-aac3-6e111dab59f9",
+      "name": "Wait3",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        928,
+        2768
+      ],
+      "webhookId": "f6c81d17-1a7d-40c4-8617-deab7d16595e"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $('Dados').item.json.Telefone }}",
+        "options": {}
+      },
+      "id": "01349c86-2f4d-47f6-baf9-1a3016a3d8d6",
+      "name": "Get Memory 1",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        800,
+        2768
+      ],
+      "credentials": {
+        "redis": {
+          "id": "GfBexlyCILPhL9U0",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $('Dados').item.json.Telefone }}",
+        "options": {}
+      },
+      "id": "1f3dddfb-449d-43c5-a26c-83b0ff4775af",
+      "name": "Get Memory 2",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1088,
+        2768
+      ],
+      "credentials": {
+        "redis": {
+          "id": "GfBexlyCILPhL9U0",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Dados').item.json.message.event }}",
+                    "rightValue": "outcoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7c878f9b-2c93-4061-954a-a832153e7647"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "outcoming"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "d7b42536-638f-4128-b51b-6aa913e9d9bc",
+                    "leftValue": "={{ $('Dados').item.json.message.event }}",
+                    "rightValue": "incoming",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "incoming"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "cfd7abf9-8146-45f9-8951-3ae37a751610",
+      "name": "Switch6",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -1312,
+        2864
+      ]
+    },
+    {
+      "parameters": {
+        "content": "# Filtro de mensagem",
+        "height": 80,
+        "width": 356,
+        "color": 4
+      },
+      "id": "fe28c96d-8afe-4932-a1ea-00e5378d0640",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -272,
+        2528
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const redis1 = JSON.parse($json.Redis1);\nconst redis2 = JSON.parse($json.Redis2);\n\nconst combinadoSemDuplicatas = Array.from(new Set([...redis1, ...redis2]));\n\nconst mensagem = combinadoSemDuplicatas.join(\" \");\n\nreturn [{ json: { mensagem_completa: mensagem } }];"
+      },
+      "id": "83e5dd69-2fe4-4bd3-9ba2-a7078a0f4794",
+      "name": "Mensagem Completa",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        3248,
-        608
+        1616,
+        2752
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "data",
+        "options": {
+          "fileName": "file.ogg",
+          "mimeType": "application/ogg"
+        }
+      },
+      "id": "b44b2817-059f-44be-8e8e-a44f76069282",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        144,
+        2816
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3c5ccbc9-69d1-4b13-a7c3-e6945bc8c655",
+              "name": "data",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.base64 }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "ec137ea5-9e3d-4863-99e8-95eb6b3d281e",
+      "name": "Edit Fields",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        2816
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Dados').item.json.Telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "pause"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        2624
       ],
-      "id": "6b4be90c-5e90-4b0c-b1da-647f91356a50",
-      "name": "Resposta de Fallback1"
+      "id": "55b1d3bc-e97d-4768-a8ff-4477253c8573",
+      "name": "Pausar IA",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "keyValue": "={{ $('Dados').item.json.Telefone }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        2944
+      ],
+      "id": "d6efcf99-f179-4582-8869-dae9ad350253",
+      "name": "Verificar Pause",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.atendimento_ia }}",
+                    "rightValue": "pause",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notStartsWith"
+                    },
+                    "id": "ff00573b-e517-43c6-8644-14a4fe8565d1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ia Ativa"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "id": "3ef0e01c-cc14-4663-bb4d-2905b350c3ab",
+                    "leftValue": "={{ $json.atendimento_ia }}",
+                    "rightValue": "pause",
+                    "operator": {
+                      "type": "string",
+                      "operation": "startsWith"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ia pausada"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "50ff99bc-d84b-430a-a481-c0492d0ad953",
+      "name": "Rota Atendimento",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [
+        -752,
+        2944
+      ]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "9865cb5b-33da-490c-afc3-186457d5b564",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    },
+                    "leftValue": "={{ $('Rotas').item.json.message.content }}",
+                    "rightValue": "Atendimento finalizado"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "IA Pausada"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "version": 2,
+                  "leftValue": "",
+                  "caseSensitive": true,
+                  "typeValidation": "strict"
+                },
+                "conditions": [
+                  {
+                    "id": "5a9a1fee-b408-469f-a08c-e8d690fc9792",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "leftValue": "={{ $('Rotas').item.json.message.content }}",
+                    "rightValue": "Atendimento finalizado"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reativar IA"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "271fec38-dab2-4901-b891-26938ed5de1f",
+      "name": "Rotas1",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -1168,
+        2768
+      ],
+      "typeVersion": 3.2
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "dados_cliente",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "telefone",
+              "condition": "eq",
+              "keyValue": "={{ $('Dados').item.json.Telefone }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "atendimento_ia",
+              "fieldValue": "reativada"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -784,
+        2784
+      ],
+      "id": "39035a96-348e-4398-93ca-21f124f5b2e6",
+      "name": "Reativar IA",
+      "credentials": {
+        "supabaseApi": {
+          "id": "HJaHadTKt4zdFZzJ",
+          "name": "Supabase account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11800d83-ecca-4f9c-a878-a2419db0c8e9",
+              "name": "message.chat_id",
+              "value": "={{ $('Webhook EVO').item.json.body.data.key.remoteJid || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "c33f9527-e661-49e5-8e5e-64f3b430928a",
+              "name": "message.content_type",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.extendedTextMessage ? 'text' : '' }}{{ $('Webhook EVO').item.json.body.data.message.conversation ? 'text' : '' }}{{ $('Webhook EVO').item.json.body.data.message.audioMessage ? 'audio' : '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage ? 'image' : '' }}",
+              "type": "string"
+            },
+            {
+              "id": "06eba1c9-cff0-4f68-b6da-6bb0092466b7",
+              "name": "message.content",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.extendedTextMessage?.text || '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage?.caption || '' }}{{ $('Webhook EVO').item.json.body.data.message.conversation || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "b97f1af3-5361-46fc-9303-d644921231d8",
+              "name": "message.timestamp",
+              "value": "={{ $('Webhook EVO').item.json.body.data.messageTimestamp.toDateTime('s').toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "dc3dc59c-90a3-4a45-bea2-de092c91083b",
+              "name": "message.content_url",
+              "value": "={{ $('Webhook EVO').item.json.body.data.message.audioMessage?.url || '' }}{{ $('Webhook EVO').item.json.body.data.message.imageMessage?.url || '' }}",
+              "type": "string"
+            },
+            {
+              "id": "8b01a818-a456-476e-bace-adefe2f04eb4",
+              "name": "message.event",
+              "value": "={{ $('Webhook EVO').item.json.body.data.key.fromMe ? 'outcoming' : 'incoming' }}",
+              "type": "string"
+            },
+            {
+              "id": "886e3751-e39b-4fc6-98d1-3113eaeebbb4",
+              "name": "=body.event",
+              "value": "={{ $('Webhook EVO').item.json.body.event }}",
+              "type": "string"
+            },
+            {
+              "id": "d04a0c6e-7842-41d2-bdb0-c0ce51d6dad7",
+              "name": "Telefone",
+              "value": "={{ $('Webhook EVO').item.json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "a57db642-3e13-452e-bb5b-19f7e9f3bd5d",
+              "name": "NomeWpp",
+              "value": "={{ $json.body.data.pushName }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "fbfdb548-a29f-4819-810d-4b069a4a7aa0",
+      "name": "Dados",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2176,
+        2784
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1,
+        "unit": "minutes"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -976,
+        2784
+      ],
+      "id": "3a71ec9a-12bd-4175-8f46-81a37150161d",
+      "name": "Wait",
+      "webhookId": "fb57c068-92da-4e57-a6bd-c69c7c2de863"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('Dados').item.json.Telefone }}",
+            "message": "={\"type\": \"ai\", \"content\": \"{{ $('Rotas').item.json.message.content.replace(/\\n/g, ' ') }}\", \"additional_kwargs\": {}, \"response_metadata\": {}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -512,
+        2944
+      ],
+      "id": "fbbe06fb-7a53-468a-9f32-131e94a120d4",
+      "name": "Salvar Historicoo Humano1",
+      "credentials": {
+        "postgres": {
+          "id": "QzZHeFb97MD0uJzU",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "n8n_chat_histories",
+          "mode": "list",
+          "cachedResultName": "n8n_chat_histories"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $('Dados').item.json.Telefone }}",
+            "message": "={\"type\": \"human\", \"content\": \"{{ $('Rotas').item.json.message.content.replace(/\\n/g, ' ') }}\", \"additional_kwargs\": {}, \"response_metadata\": {}}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "session_id",
+              "displayName": "session_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        -624,
+        2640
+      ],
+      "id": "ba6064c1-e741-47c2-8cc2-d47b65055cfd",
+      "name": "Salvar Historicoo Humano",
+      "credentials": {
+        "postgres": {
+          "id": "QzZHeFb97MD0uJzU",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        320,
+        2816
+      ],
+      "id": "24b7a012-27e7-4dd5-a632-63a2ac91bfa3",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YatACCEanvcSQFIg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "Analise a imagem e me traga um resumo simples e o mais curto possível do que ela é",
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        192,
+        3024
+      ],
+      "id": "547e9240-989a-4d3d-b428-a71ff868eb79",
+      "name": "Analyze image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YatACCEanvcSQFIg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
     },
     {
       "parameters": {
@@ -208,11 +1636,11 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        2592,
-        832
+        1792,
+        2752
       ],
-      "id": "53ad38e9-3cac-4c9c-a200-4c822e2f67fd",
-      "name": "Google Gemini Chat Model",
+      "id": "5453a4c2-fa3c-4831-a7e7-238cb8ebbf5b",
+      "name": "Google Gemini Chat Model3",
       "credentials": {
         "googlePalmApi": {
           "id": "YatACCEanvcSQFIg",
@@ -222,93 +1650,492 @@
     }
   ],
   "connections": {
-    "When chat message received": {
+    "Atendente": {
       "main": [
         [
           {
-            "node": "Agente - Barbeiro Virtual",
+            "node": "Busca Telefone",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Agente - Barbeiro Virtual": {
-      "main": [
-        [
-          {
-            "node": "Resposta de Fallback1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Memória da Conversa1": {
+    "Postgres Chat Memory": {
       "ai_memory": [
         [
           {
-            "node": "Agente - Barbeiro Virtual",
+            "node": "Atendente",
             "type": "ai_memory",
             "index": 0
           }
         ]
       ]
     },
-    "cancelarAgendamento1": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agente - Barbeiro Virtual",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "verAgendamentos1": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agente - Barbeiro Virtual",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "atualizarAgendamento1": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agente - Barbeiro Virtual",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "agendarHorario1": {
-      "ai_tool": [
-        [
-          {
-            "node": "Agente - Barbeiro Virtual",
-            "type": "ai_tool",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Resposta de Fallback1": {
+    "Merge1": {
       "main": [
-        []
+        [
+          {
+            "node": "Cria Histórico Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
-    "Google Gemini Chat Model": {
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Adiciona CHAT supabase",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Atualiza CHAT Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Telefone": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Adiciona CHAT supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Atualiza CHAT Supabase": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Cria Histórico Supabase": {
+      "main": [
+        [
+          {
+            "node": "Delete Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Switch6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Supabase1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase1": {
+      "main": [
+        [
+          {
+            "node": "Switch6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook EVO": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Analyze image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Redis5",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Redis4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis4": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis5": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch1": {
+      "main": [
+        [
+          {
+            "node": "Text Memory1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Text Memory1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compara Get Memory1": {
+      "main": [
+        [
+          {
+            "node": "Mensagem Completa",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Memory1": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Audio Memory1": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields8": {
+      "main": [
+        [
+          {
+            "node": "Compara Get Memory1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Get Memory 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Memory 1": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Memory 2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch6": {
+      "main": [
+        [
+          {
+            "node": "Rotas1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Verificar Pause",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mensagem Completa": {
+      "main": [
+        [
+          {
+            "node": "Atendente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pausar IA": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historicoo Humano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verificar Pause": {
+      "main": [
+        [
+          {
+            "node": "Rota Atendimento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rota Atendimento": {
+      "main": [
+        [
+          {
+            "node": "Switch1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Salvar Historicoo Humano1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rotas1": {
+      "main": [
+        [
+          {
+            "node": "Pausar IA",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reativar IA": {
+      "main": [
+        [
+          {
+            "node": "Salvar Historicoo Humano",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Supabase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Reativar IA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Audio Memory1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze image": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
       "ai_languageModel": [
         [
           {
-            "node": "Agente - Barbeiro Virtual",
+            "node": "Atendente",
             "type": "ai_languageModel",
             "index": 0
           }
