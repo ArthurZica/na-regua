@@ -19,7 +19,7 @@
     {
       "parameters": {
         "content": "",
-        "height": 492,
+        "height": 748,
         "width": 692,
         "color": 4
       },
@@ -31,6 +31,87 @@
       "typeVersion": 1,
       "id": "7461f8e6-5b2c-421e-95d4-b612c9452922",
       "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "d789fa3f-7b61-4f99-9c6a-11f1f71c8aee",
+      "name": "Loop Over Items3",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        3248,
+        2656
+      ]
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"messages\"]\n}"
+      },
+      "id": "2b856eaa-3f22-4bf7-8d01-b6aa09330f5f",
+      "name": "OutputParser1",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2864,
+        2832
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Whatsapp message to be splitted and formated: {{ $json.output }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "={\n  \"messages\": [\n    \"Por favor, gere a saída no seguinte formato JSON: {\\\"messages\\\": [\\\"splitedMessage\\\", \\\"splitedMessage\\\", \\\"splitedMessage\\\"]}\",\n    \"As mensagens devem ser divididas de forma natural, afinal estamos conversando com um humano. Certifique-se de que a resposta siga exatamente essa estrutura, incluindo os colchetes e as aspas.\",\n    \"Jamais separe uma mensagem vazia. Cada mensagem deve ter entre 300 e 500 caracteres, sem cortar informações, pois é uma conversa de chat.\",\n    \"Certifique-se de que a resposta siga exatamente essa estrutura: *negrito* (substitua '**' por '*') não made nada em negrito remova todos '*'; ~tachado~ (caso seja algo excluído/alterado); _itálico_ (extremamente raro).\",\n    \"Tudo o que for link, pode colocar entre \\\"`\\\", ou seja, na seguinte formatação: `www.link.com.br`. Use sempre essa formatação para todos os links.\",\n\"troque essas palavra: Prazer por: feliz em conhecer\"\n  ]\n}"
+            }
+          ]
+        }
+      },
+      "id": "d834c238-c7ba-4910-884f-aa90d7a346a4",
+      "name": "Parser  Chain",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.4,
+      "position": [
+        2672,
+        2624
+      ]
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 508,
+        "width": 1380,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2528,
+        2464
+      ],
+      "typeVersion": 1,
+      "id": "8eb55d29-20b2-4b96-997f-1f1d4602755d",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "# Divisão de Mensagens Inteligente - Texto",
+        "height": 80,
+        "width": 736,
+        "color": 4
+      },
+      "id": "183a2f27-cc87-4f5d-85ef-453b42b33f2c",
+      "name": "Sticky Note19",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        2544,
+        2480
+      ]
     },
     {
       "parameters": {
@@ -75,8 +156,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3,
       "position": [
-        3232,
-        2672
+        3216,
+        2192
       ],
       "id": "020211bd-74cb-49d1-b22c-83764494ee62",
       "name": "Merge1"
@@ -109,8 +190,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        2736,
-        2672
+        2720,
+        2192
       ],
       "id": "53c384fa-65c2-4871-a5f8-949032d95da7",
       "name": "If4"
@@ -124,8 +205,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        2528,
-        2496
+        2512,
+        2016
       ],
       "typeVersion": 1,
       "id": "6e139c08-cc56-4e6a-9292-28c5430cbc1a",
@@ -143,8 +224,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        2544,
-        2512
+        2528,
+        2032
       ]
     },
     {
@@ -163,8 +244,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        2576,
-        2672
+        2560,
+        2192
       ],
       "id": "33f2d9b7-a22b-468a-a394-1490228427e3",
       "name": "Busca Telefone",
@@ -200,8 +281,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3008,
-        2560
+        2992,
+        2080
       ],
       "id": "5540ecfb-db06-4bc2-8c1c-d6ea8a3b2076",
       "name": "Adiciona CHAT supabase",
@@ -241,8 +322,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3008,
-        2752
+        2992,
+        2272
       ],
       "id": "7754c107-fbc2-4c91-8325-6548d3b27556",
       "name": "Atualiza CHAT Supabase",
@@ -289,8 +370,8 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        3440,
-        2672
+        3424,
+        2192
       ],
       "id": "404aba55-8047-415a-8ef9-fbbcba1b9173",
       "name": "Cria Histórico Supabase",
@@ -303,6 +384,36 @@
     },
     {
       "parameters": {
+        "fieldToSplitOut": "output.messages",
+        "options": {
+          "destinationFieldName": "output"
+        }
+      },
+      "id": "84aa8b26-c960-406c-88c4-6d8c0ada7849",
+      "name": "Split de Mensagem",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        3024,
+        2656
+      ]
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "id": "e69bfc55-2ec3-48ce-b938-fdfbf31d32bf",
+      "name": "1 segundo",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        3744,
+        2672
+      ],
+      "webhookId": "3d687a7e-268e-4399-bf51-77626e001509"
+    },
+    {
+      "parameters": {
         "operation": "delete",
         "key": "={{ $('Dados').item.json.Telefone }}"
       },
@@ -311,8 +422,8 @@
       "type": "n8n-nodes-base.redis",
       "typeVersion": 1,
       "position": [
-        3632,
-        2672
+        3616,
+        2192
       ],
       "credentials": {
         "redis": {
@@ -1647,14 +1758,275 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2624,
+        2832
+      ],
+      "id": "b5303227-53ac-4857-8197-3e6316131e41",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YatACCEanvcSQFIg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "={{ $('Webhook EVO1').item.json.body.instance }}",
+        "remoteJid": "={{ $('Dados1').item.json.Telefone }}",
+        "messageText": "={{ $json.output }}",
+        "options_message": {
+          "delay": 4200,
+          "linkPreview": false
+        }
+      },
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        3504,
+        2672
+      ],
+      "id": "5cc21213-c37d-4256-92c6-b58e521dedf9",
+      "name": "Evolution API3",
+      "credentials": {
+        "evolutionApi": {
+          "id": "uCyXtjA0cpWKnwVw",
+          "name": "Evolution account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1792,
+        3072
+      ],
+      "id": "4d00ff06-0618-4c05-9949-c36b659baa71",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "YatACCEanvcSQFIg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Cancele o agendamento na barbearia com essa tool.",
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2016,
+        2992
+      ],
+      "id": "e29f4e2e-2212-4336-94f4-7dc27cdf1352",
+      "name": "cancelarAgendamento1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Atualize ou edite o agendamento do cliente com essa tool.",
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "useDefaultReminders": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Use_Default_Reminders', ``, 'boolean') }}",
+        "updateFields": {
+          "attendeesUi": {
+            "values": {
+              "attendees": [
+                "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Attendees', ``, 'string') }}"
+              ]
+            }
+          },
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('ID', ``, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2256,
+        2992
+      ],
+      "id": "cbaff81b-7763-4bb0-ba48-f913f9746014",
+      "name": "atualizarAgendamento1",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Analisa a FAQ e responde à informação correta",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Prompt__User_Message_', ``, 'string') }}",
+        "options": {
+          "systemMessage": "=# FAQ Barbearia X\nP é igual à pergunta e R é igual à resposta\n\nP: Qual endereço?\nR: Rua Exemplo, 123 - Centro - Cidade/Estado\n\nP: Que horas abrem/fecham?\nR: Seg-Sex: 9h-19h, Sáb: 8h-17h, Dom: Fechado\n\nP: Aceitam cartão?\nR: Sim, crédito, débito, Pix e dinheiro\n\nP: Qual o pix?\nR: O pagamento é feito presencialmente.\n\nP: Como faço o pagamento?\nR: O pagamento é feito presencialmente.\n\nP: Preciso agendar?\nR: Recomendamos agendar, mas atendemos por ordem de chegada também"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1792,
+        2912
+      ],
+      "id": "8f6b3a1b-7a59-447d-b663-341152a200b9",
+      "name": "Cerébro"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Obtenha a lista de agendamentos, horários disponíveis e clientes agendados.",
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "returnAll": true,
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2128,
+        2944
+      ],
+      "id": "1f89d3a0-67cc-4850-bafb-b48c02daaea2",
+      "name": "verAgendamentos",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "Agende o horário na barbearia com essa tool.",
+        "calendar": {
+          "__rl": true,
+          "value": "846b793c13702beb7662850e9cd755e87476f1b9b1543f451dbe4b31ba1f3283@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "Automação"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "attendees": [
+            ""
+          ],
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}",
+          "location": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Location', ``, 'string') }}",
+          "sendUpdates": "all",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        2368,
+        2944
+      ],
+      "id": "ed91f6d7-d2cc-4586-b637-73556a75c223",
+      "name": "agendarHorario",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "nRGki09fLIlBWYCl",
+          "name": "Google Calendar account"
+        }
+      }
     }
   ],
   "connections": {
+    "Loop Over Items3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Evolution API3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OutputParser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser  Chain": {
+      "main": [
+        [
+          {
+            "node": "Split de Mensagem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Atendente": {
       "main": [
         [
           {
             "node": "Busca Telefone",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Parser  Chain",
             "type": "main",
             "index": 0
           }
@@ -1739,6 +2111,28 @@
         [
           {
             "node": "Delete Memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split de Mensagem": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "1 segundo": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
             "type": "main",
             "index": 0
           }
@@ -2137,6 +2531,94 @@
           {
             "node": "Atendente",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Parser  Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API3": {
+      "main": [
+        [
+          {
+            "node": "1 segundo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Cerébro",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cancelarAgendamento1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "atualizarAgendamento1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cerébro": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "verAgendamentos": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "agendarHorario": {
+      "ai_tool": [
+        [
+          {
+            "node": "Atendente",
+            "type": "ai_tool",
             "index": 0
           }
         ]
