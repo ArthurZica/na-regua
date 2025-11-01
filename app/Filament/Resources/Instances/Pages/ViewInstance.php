@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Instances\Pages;
 
+use App\Filament\Actions\ConnectWhatsappAction;
 use App\Filament\Resources\Instances\InstanceResource;
 use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
@@ -14,6 +15,7 @@ class ViewInstance extends ViewRecord
     {
         return [
             EditAction::make(),
+            ConnectWhatsappAction::make(),
         ];
     }
 }
