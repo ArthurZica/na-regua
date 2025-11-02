@@ -17,7 +17,8 @@ class InstanceInfolist
                     ->translateLabel(),
                 IconEntry::make('connected')
                     ->translateLabel()
-                    ->boolean(),
+                    ->boolean()
+                    ->getStateUsing(fn (Instance $record) => $record->fresh()->connected),
                 TextEntry::make('empresa.name')
                     ->label('Empresa'),
                 TextEntry::make('created_at')

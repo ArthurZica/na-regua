@@ -16,7 +16,6 @@ class VerifyConnectionAction
             ->icon('heroicon-o-check-circle')
             ->action(function ($record) {
                 $result = (new \App\Services\WhatsappService())->verifyConnection($record->id);
-
                 if($result->error){
                     Notification::make()
                         ->danger()
