@@ -80,6 +80,17 @@ services:
       depends_on:
         - mysql
         - redis
+    n8n:
+      container_name: n8n
+      image: n8nio/n8n:latest
+      ports:
+        - "5678:5678"
+      env_file:
+        - .env.n8n
+      networks:
+        - sail
+      volumes:
+        - ./n8n_data:/data
 networks:
     sail:
         driver: bridge

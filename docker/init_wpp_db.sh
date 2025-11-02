@@ -16,4 +16,11 @@ GRANT ALL PRIVILEGES ON evolution.* TO '${MYSQL_USER}'@'%';
 FLUSH PRIVILEGES;
 EOSQL
 
+echo "Criando banco 'n8n' e garantindo permissões para ${MYSQL_USER}..."
+mysql -u root -p"$MYSQL_ROOT_PASSWORD" <<-EOSQL
+CREATE DATABASE IF NOT EXISTS n8n;
+GRANT ALL PRIVILEGES ON n8n.* TO '${MYSQL_USER}'@'%';
+FLUSH PRIVILEGES;
+EOSQL
+
 echo "Inicialização custom concluída."
