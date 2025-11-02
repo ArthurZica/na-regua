@@ -21,7 +21,7 @@ class WhatsappService
             $webhookConfig = [
                 'url' => 'http://laravel.test/api/wpp/webhook',
                 'events' => [
-                    'QRCODE_UPDATED','MESSAGES_UPSERT','MESSAGES_UPDATE','NEW_JWT_TOKEN'
+                    'QRCODE_UPDATED','MESSAGES_UPSERT','MESSAGES_UPDATE','NEW_JWT_TOKEN','LOGOUT_INSTANCE'
                 ]
             ];
             $data = [
@@ -83,6 +83,30 @@ class WhatsappService
             'error' => false,
             'message' => 'Qr code buscado com sucesso!',
             'data' => $response->json()
+        ];
+    }
+
+    public function verifyConnection(int $id){
+        $instance = Instance::find($id);
+        $response = Http::withHeaders(['apiKey' => $this->token])
+            ->get($this->wppApiUrl."/instance/connectionState/$instance->instance_id");
+
+        if($response->failed()){
+            return (object) [
+                'error' => true,
+                'message' => 'Ocorreu um erro ao conectar a sua instancia! Tente novamente!',
+                'data' => $response->json('response')['message'][0]
+            ];
+        }
+
+        $connected = $response->json('instance')['state'] === 'open';
+        $instance->connected = $connected;
+        $instance->save();
+
+        return (object) [
+            'connected' => $connected,
+            'error' => false,
+            'message' => $connected ? 'O dispositivo está conectado!' : 'O dispositivo está desconectado!'
         ];
     }
 }

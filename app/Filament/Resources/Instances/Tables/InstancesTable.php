@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Instances\Tables;
 
 use App\Filament\Actions\ConnectWhatsappAction;
+use App\Filament\Actions\VerifyConnectionAction;
 use App\Services\WhatsappService;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -36,27 +37,9 @@ class InstancesTable
                 TrashedFilter::make(),
             ])
             ->recordActions([
-//                Action::make('conectar')
-//                    ->label('Conectar')
-//                    ->icon('heroicon-o-qr-code')
-//                    ->modalHeading('Conectar ao WhatsApp')
-//                    ->modalDescription('Escaneie o QR Code abaixo para conectar sua conta.')
-//                    ->modalContent(function ($record) {
-//                        $result = (new WhatsappService())->connectInstance($record->id);
-//                        if (!empty($result->error)) {
-//                            return view('filament.instances.error-modal', [
-//                                'message' => $result->data,
-//                            ]);
-//                        }
-//
-//                        return view('filament.instances.qr-modal', [
-//                            'qr' => $result->data['base64'],
-//                        ]);
-//                    })
-//                    ->modalWidth('sm')
-//                    ->requiresConfirmation(false)
-//                    ->modalSubmitAction(false),
-                ConnectWhatsappAction::make(),
+                VerifyConnectionAction::make(),
+                ConnectWhatsappAction::make()
+                    ->visible(fn ($record) => !$record->connected),
                 ViewAction::make(),
                 EditAction::make(),
             ])

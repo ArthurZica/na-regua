@@ -29,6 +29,9 @@ class ConnectWhatsappAction
             })
             ->modalWidth('sm')
             ->requiresConfirmation(false)
-            ->modalSubmitAction(false);
+            ->modalSubmitActionLabel('Confirmar conexão')
+            ->action(function ($record) {
+                VerifyConnectionAction::make()->record($record)->call();
+            });
     }
 }
