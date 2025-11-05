@@ -109,4 +109,30 @@ class WhatsappService
             'message' => $connected ? 'O dispositivo está conectado!' : 'O dispositivo está desconectado!'
         ];
     }
+
+    public function sendMessage(string $phone, string $text,string $instanceId): object
+    {
+        $data = [
+            "number" => $phone,
+            "text" => $text,
+        ];
+
+        $response = Http::withHeaders(['apiKey' => $this->token])
+            ->post($this->wppApiUrl."/message/sendText/$instanceId",$data);
+
+        if($response->failed()){
+            return (object) [
+                'error' => true,
+                'message' => 'Ocorreu um erro ao conectar a sua instancia! Tente novamente!',
+                'data' => $response->json('response')['message'][0]
+            ];
+        }
+
+        //salva na tabela de mensagens
+        return (object) [
+            'error' => false,
+            'message' => 'Mensagem enviada com sucesso!',
+            'data' => $response->json()
+        ];
+    }
 }
