@@ -14,6 +14,7 @@ class Customer extends Model
         'email',
         'name',
         'phone',
+        'id_wpp',
         'empresa_id',
     ];
 

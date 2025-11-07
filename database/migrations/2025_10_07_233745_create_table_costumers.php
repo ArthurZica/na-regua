@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->string('email')->nullable();
             $table->string('name');
             $table->string('phone');
+            $table->string('id_wpp')->nullable();
             $table->foreignId('empresa_id');
             $table->softDeletes();
             $table->timestamps();

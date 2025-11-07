@@ -58,6 +58,7 @@ class CustomerController extends Controller
         Customer::create([
             'empresa_id' => $empresa,
             'phone' => $request->phone,
+            'id_wpp' => $request->phone,
             'name' => $request->name,
         ]);
 
