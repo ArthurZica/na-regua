@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomerRequest extends FormRequest
+class CreateCustomerByInstanceRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -12,7 +12,7 @@ class CustomerRequest extends FormRequest
             'email' => ['nullable', 'email', 'max:254'],
             'name' => ['required'],
             'phone' => ['required'],
-            'empresa_id' => ['required', 'exists:empresas'],
+            'instance' => ['required', 'exists:instances,instance_id'],
         ];
     }
 

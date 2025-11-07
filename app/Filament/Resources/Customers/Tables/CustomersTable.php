@@ -20,14 +20,14 @@ class CustomersTable
     {
         return $table
             ->columns([
-                TextColumn::make('email')
-                    ->label('Email address')
-                    ->translateLabel()
-                    ->searchable(),
                 TextColumn::make('name')
                     ->translateLabel()
                     ->searchable(),
                 PhoneColumn::make('phone')->displayFormat(PhoneInputNumberType::INTERNATIONAL)
+                    ->translateLabel()
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->label('Email address')
                     ->translateLabel()
                     ->searchable(),
                 TextColumn::make('deleted_at')

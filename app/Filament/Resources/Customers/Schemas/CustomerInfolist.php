@@ -14,11 +14,11 @@ class CustomerInfolist
     {
         return $schema
             ->components([
+                TextEntry::make('name')->translateLabel(),
+                PhoneEntry::make('phone')->displayFormat(PhoneInputNumberType::INTERNATIONAL)->translateLabel(),
                 TextEntry::make('email')
                     ->label('Email address')
                     ->translateLabel(),
-                TextEntry::make('name')->translateLabel(),
-                PhoneEntry::make('phone')->displayFormat(PhoneInputNumberType::INTERNATIONAL)->translateLabel(),
             ]);
     }
 }
