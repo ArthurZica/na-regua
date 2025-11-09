@@ -139,6 +139,7 @@ class WhatsappService
             "status" => 1,
             "type" => "conversation",
             "media_url" => null,
+            "empresa_id" => $instance->empresa_id,
         ]);
 
         return (object) [

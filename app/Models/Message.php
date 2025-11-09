@@ -16,8 +16,13 @@ class Message extends Model
         'status',
         'type',
         'media_url',
+        'empresa_id',
     ];
 
+    public function empresa(): BelongsTo
+    {
+        return $this->belongsTo(Empresa::class);
+    }
     public function instance(): BelongsTo
     {
         return $this->belongsTo(Instance::class);

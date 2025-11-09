@@ -47,8 +47,6 @@ class WhatsappEventsService
             $content = $body->data['message'][$type]['caption'];
         }
 
-
-
         Message::create([
             "msg_id_wpp" => $body->data['key']['id'],
             "direction" => "inbound",
@@ -58,6 +56,7 @@ class WhatsappEventsService
             "status" => 0,
             "type" => $body->data['messageType'],
             "media_url" => null,
+            "empresa_id" => $body->empresa->id,
         ]);
     }
     private function modifyBodyAddingData(array $body){

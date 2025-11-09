@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->integer('status')->default(0);
             $table->string('type');
             $table->string('media_url')->nullable();
+            $table->foreignId('empresa_id');
             $table->timestamps();
         });
     }
