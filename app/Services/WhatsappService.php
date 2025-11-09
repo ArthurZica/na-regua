@@ -135,4 +135,39 @@ class WhatsappService
             'data' => $response->json()
         ];
     }
+
+    public function getWhatsappId(string $phone, string $instanceId): object
+    {
+        try{
+            $response = Http::withHeaders(['apiKey' => $this->token])
+                ->post($this->wppApiUrl."/chat/whatsappNumbers/$instanceId",[
+                    "numbers" => [$phone]
+                ]);
+        }catch (\Exception $error){
+            return (object) [
+                'error' => true,
+                'message' => 'Ocorreu um erro ao Buscar o telefone! '.$error->getMessage(),
+            ];
+        }
+
+        if($response->failed()){
+            return (object) [
+                'error' => true,
+                'message' => 'Ocorreu um erro ao Buscar o telefone!',
+                'data' => $response->json('response')['message'][0]
+            ];
+        }
+
+        if(!$response->body('exists')){
+            return (object) [
+                'error' => true,
+                'message' => 'O número de telefone não está registrado no WhatsApp!',
+            ];
+        }
+        return (object) [
+            'error' => false,
+            'message' => 'WhatsApp ID obtido com sucesso!',
+            'data' => $response->object()[0]->jid
+        ];
+    }
 }
