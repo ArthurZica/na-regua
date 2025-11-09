@@ -41,8 +41,17 @@ class WhatsappEventsService
         Log::info('aaaa',[$body['instance']]);
         $instance = Instance::where('instance_id',$body['instance'])->first();
         $empresa = Empresa::find($instance->empresa_id);
-        $phone =  explode('@',$body['data']['key']['remoteJid'])[0];
-        $customer = Customer::where('id_wpp',$phone)->where('empresa_id',$empresa->id)->first();
+        $jid = $body['data']['key']['remoteJid'];
+        $phone = explode('@',$jid)[0];
+        $customer = Customer::where('id_wpp',$jid)->where('empresa_id',$empresa->id)->first();
+
+        if(!isset($customer)){
+           $customer = Customer::byPhone($phone)->where('empresa_id',$empresa->id)->first();
+           if($customer){
+               $customer->id_wpp = $jid;
+               $customer->save();
+           }
+        }
 
         $body['empresa'] = $empresa;
         $body['customer'] = $customer;

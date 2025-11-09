@@ -22,4 +22,10 @@ class Customer extends Model
     {
         return $this->belongsTo(Empresa::class);
     }
+    protected function scopeByPhone($query,$phone){
+        $phone = preg_replace('/\D/', '', $phone);
+        $ddd = substr($phone, 0, 4);
+        $phoneWithoutDDDAnd9 = substr($phone, 4);
+        return $query->where('phone', 'like',"%$ddd%$phoneWithoutDDDAnd9%");
+    }
 }
