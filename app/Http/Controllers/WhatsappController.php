@@ -13,6 +13,7 @@ class WhatsappController extends Controller
     public function webhook(Request $request)
     {
         Log::info('Webhook recebido:', $request->all());
+        dump($request->all());
         $service = new WhatsappEventsService();
         switch($request->input("event")){
             case 'logout.instance':

@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Models\Customer;
 use App\Models\Empresa;
 use App\Models\Instance;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -26,8 +27,9 @@ class WhatsappEventsService
 
     public function sendWebhookToWorkFlow(Request $request): void
     {
-        $body = $request->getContent();
         $newBody = $this->modifyBodyAddingData($request->json()->all());
+        $this->createInboundingMessage((object) $newBody);
+
         $contentType = $request->header('Content-Type', 'application/json');
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
@@ -37,8 +39,28 @@ class WhatsappEventsService
         return;
     }
 
+    private function createInboundingMessage(object $body){
+
+        $content = $body->data['message']['conversation'] ?? null;
+        $type = $body->data['messageType'];
+        if($type !== 'conversation'){
+            $content = $body->data['message'][$type]['caption'];
+        }
+
+
+
+        Message::create([
+            "msg_id_wpp" => $body->data['key']['id'],
+            "direction" => "inbound",
+            "message" => $content,
+            "instance_id" => $body->instance_data->id,
+            "phone_id_wpp" => $body->data['key']['remoteJid'],
+            "status" => 0,
+            "type" => $body->data['messageType'],
+            "media_url" => null,
+        ]);
+    }
     private function modifyBodyAddingData(array $body){
-        Log::info('aaaa',[$body['instance']]);
         $instance = Instance::where('instance_id',$body['instance'])->first();
         $empresa = Empresa::find($instance->empresa_id);
         $jid = $body['data']['key']['remoteJid'];
@@ -54,6 +76,7 @@ class WhatsappEventsService
         }
 
         $body['empresa'] = $empresa;
+        $body['instance_data'] = $instance;
         $body['customer'] = $customer;
         return $body;
     }
