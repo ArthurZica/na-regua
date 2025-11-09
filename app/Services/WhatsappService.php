@@ -4,6 +4,7 @@ namespace App\Services;
 
 
 use App\Models\Instance;
+use App\Models\Message;
 use Illuminate\Support\Facades\Http;
 
 class WhatsappService
@@ -123,12 +124,23 @@ class WhatsappService
         if($response->failed()){
             return (object) [
                 'error' => true,
-                'message' => 'Ocorreu um erro ao conectar a sua instancia! Tente novamente!',
+                'message' => 'Ocorreu um erro ao enviar sua mensagem! Tente novamente!',
                 'data' => $response->json('response')['message'][0]
             ];
         }
+        $instance = Instance::where('instance_id',$instanceId)->first();
 
-        //salva na tabela de mensagens
+        Message::create([
+            "msg_id_wpp" => $response->json('key')['id'],
+            "direction" => "outbound",
+            "message" => $text,
+            "instance_id" => $instance->id,
+            "phone_id_wpp" => $phone,
+            "status" => 1,
+            "type" => "conversation",
+            "media_url" => null,
+        ]);
+
         return (object) [
             'error' => false,
             'message' => 'Mensagem enviada com sucesso!',
