@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AppointmentRequest;
+use App\Http\Requests\HorariosDisponiveisRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
+use App\Services\AppointmentService;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AppointmentController extends Controller
@@ -49,4 +51,12 @@ class AppointmentController extends Controller
 
         return response()->json();
     }
+
+    public function getAvailableSlots(HorariosDisponiveisRequest $request)
+    {
+        $appointmentService = new AppointmentService();
+        $slots = $appointmentService->getAvailableSlots($request->date,$request->service_id,$request->empresa_id,$request->barber_id);
+        return response()->json(['available_slots' => $slots]);
+    }
+
 }

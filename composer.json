@@ -10,6 +10,7 @@
         "ariaieboy/filament-currency": "*",
         "filament/filament": "^4.0",
         "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1",
         "saade/filament-fullcalendar": "^4.0",
         "ysfkaya/filament-phone-input": "*"
