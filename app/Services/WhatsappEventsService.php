@@ -44,7 +44,7 @@ class WhatsappEventsService
 
         $content = $body->data['message']['conversation'] ?? null;
         $type = $body->data['messageType'];
-        if($type !== 'conversation'){
+        if($type !== 'conversation' && $type !== 'audioMessage'){
             $content = $body->data['message'][$type]['caption'];
         }
 
