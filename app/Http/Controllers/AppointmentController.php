@@ -80,4 +80,17 @@ class AppointmentController extends Controller
         return new AppointmentResource(Appointment::create($data));
     }
 
+    public function deleteApi(int $id)
+    {
+        $agendamento = Appointment::find($id);
+        $agendamento->delete();
+        return response()->json();
+    }
+
+    public  function getCustomerAppointments(int $customerId): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $appointments = Appointment::where('customer_id', $customerId)->where('scheduled_at','>=',now())->orderBy('scheduled_at')->get();
+        return AppointmentResource::collection($appointments);
+    }
+
 }
