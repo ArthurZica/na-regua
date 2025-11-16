@@ -51,7 +51,7 @@ class AppointmentService
         foreach ($appointments as $appt) {
             $bookedByBarber[$appt->user_id][] = [
                 'start' => Carbon::parse($appt->scheduled_at),
-                'end'   => Carbon::parse($appt->end_at),
+                'end' => Carbon::parse($appt->end_at),
             ];
         }
 
@@ -86,6 +86,48 @@ class AppointmentService
         }
 
         return $available;
+    }
+
+    public function isSlotAvailable($scheduledAt, $serviceId, $empresaId, $barberId): object
+    {
+        if($barberId === null){
+            $users = Empresa::where('id', $empresaId)->with('users')->first()->users;
+
+            foreach ($users as $user) {
+                $slots = $this->getAvailableSlots(
+                    Carbon::parse($scheduledAt)->toDateString(),
+                    $serviceId,
+                    $empresaId,
+                    $user->id
+                );
+               if(in_array(Carbon::parse($scheduledAt)->format('H:i'), $slots, true)){
+                   return (object) [
+                       'available' => true,
+                       'barber_id' => $user->id
+                   ];
+               }
+            }
+        }else{
+            $slots = $this->getAvailableSlots(
+                Carbon::parse($scheduledAt)->toDateString(),
+                $serviceId,
+                $empresaId,
+                $barberId
+            );
+        }
+
+        if(!in_array(Carbon::parse($scheduledAt)->format('H:i'), $slots, true)){
+            return (object) [
+                'available' => false,
+                'message' => 'The selected time slot is not available.',
+                'slots' => $slots
+            ];
+        }
+
+        return (object) [
+            'available' => true,
+            'barber_id' => $barberId
+        ];
     }
 
 }

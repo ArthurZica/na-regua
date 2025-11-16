@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AppointmentApiRequest;
 use App\Http\Requests\AppointmentRequest;
 use App\Http\Requests\HorariosDisponiveisRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class AppointmentController extends Controller
@@ -57,6 +59,25 @@ class AppointmentController extends Controller
         $appointmentService = new AppointmentService();
         $slots = $appointmentService->getAvailableSlots($request->date,$request->service_id,$request->empresa_id,$request->barber_id);
         return response()->json(['available_slots' => $slots]);
+    }
+
+    public function storeApi(AppointmentApiRequest $request)
+    {
+        $appointmentService = new AppointmentService();
+
+        $horarioDisponivel = $appointmentService->isSlotAvailable($request->scheduled_at, $request->service_id, $request->empresa_id, $request->user_id);
+
+        if(!$horarioDisponivel->available) {
+            return response()->json($horarioDisponivel, 409);
+        }
+
+        $data = $request->validated();
+        $data['user_id'] = $horarioDisponivel->barber_id;
+
+        $service = \App\Models\Service::find($data['service_id']);
+        $dataInicio = Carbon::parse($data['scheduled_at']);
+        $data['end_at'] = $dataInicio->addMinutes($service->duration_minutes);
+        return new AppointmentResource(Appointment::create($data));
     }
 
 }

@@ -15,12 +15,11 @@ class ServiceResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'price' => $this->price,
+            'preco_brl' => number_format($this->price/100, 2, ',', '.'),
             'duration_minutes' => $this->duration_minutes,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-
             'empresa_id' => $this->empresa_id,
-
             'empresa' => new EmpresaResource($this->whenLoaded('empresa')),
         ];
     }

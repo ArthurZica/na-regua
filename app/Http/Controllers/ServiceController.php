@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ServiceRequest;
+use App\Http\Requests\validaEmpresaRequest;
 use App\Http\Resources\ServiceResource;
 use App\Models\Service;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -48,5 +49,12 @@ class ServiceController extends Controller
         $service->delete();
 
         return response()->json();
+    }
+
+    public function getByEmpresa(validaEmpresaRequest $request){
+
+        $servicos = Service::where('empresa_id',$request->empresa_id)->get();
+
+        return ServiceResource::collection($servicos);
     }
 }

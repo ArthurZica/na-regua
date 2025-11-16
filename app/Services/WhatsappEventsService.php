@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Empresa;
 use App\Models\Instance;
 use App\Models\Message;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -62,6 +63,7 @@ class WhatsappEventsService
     private function modifyBodyAddingData(array $body){
         $instance = Instance::where('instance_id',$body['instance'])->first();
         $empresa = Empresa::find($instance->empresa_id);
+        $services = Service::where('empresa_id',$empresa->id)->get();
         $jid = $body['data']['key']['remoteJid'];
         $phone = explode('@',$jid)[0];
         $customer = Customer::where('id_wpp',$jid)->where('empresa_id',$empresa->id)->first();
@@ -77,6 +79,7 @@ class WhatsappEventsService
         $body['empresa'] = $empresa;
         $body['instance_data'] = $instance;
         $body['customer'] = $customer;
+        $body['services'] = $services;
         return $body;
     }
 
