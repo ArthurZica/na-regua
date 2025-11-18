@@ -65,6 +65,21 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    postgres:
+      container_name: postgres_naregua
+      image: postgres:15
+      networks:
+        - sail
+      command: [ "postgres", "-c", "max_connections=1000" ]
+      restart: always
+      ports:
+        - 5432:5432
+      env_file:
+        - .env.postgres
+      volumes:
+        - ./postgres_data:/var/lib/postgresql/data
+      expose:
+        - 5432
     evolution-api:
       container_name: evolution_api
       image: atendai/evolution-api:latest
@@ -78,7 +93,7 @@ services:
       networks:
         - sail
       depends_on:
-        - mysql
+        - postgres
         - redis
     n8n:
       container_name: n8n

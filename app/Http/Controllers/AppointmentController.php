@@ -10,6 +10,7 @@ use App\Models\Appointment;
 use App\Services\AppointmentService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
@@ -57,7 +58,7 @@ class AppointmentController extends Controller
     public function getAvailableSlots(HorariosDisponiveisRequest $request)
     {
         $appointmentService = new AppointmentService();
-        $slots = $appointmentService->getAvailableSlots($request->date,$request->service_id,$request->empresa_id,$request->barber_id);
+        $slots = $appointmentService->getAvailableSlots($request->date, $request->service_id, $request->empresa_id, $request->barber_id);
         return response()->json(['available_slots' => $slots]);
     }
 
@@ -67,7 +68,7 @@ class AppointmentController extends Controller
 
         $horarioDisponivel = $appointmentService->isSlotAvailable($request->scheduled_at, $request->service_id, $request->empresa_id, $request->user_id);
 
-        if(!$horarioDisponivel->available) {
+        if (!$horarioDisponivel->available) {
             return response()->json($horarioDisponivel, 409);
         }
 
@@ -80,16 +81,17 @@ class AppointmentController extends Controller
         return new AppointmentResource(Appointment::create($data));
     }
 
-    public function deleteApi(int $id)
+    public function deleteApi(Request $request)
     {
+        $id = $request->query('id');
         $agendamento = Appointment::find($id);
         $agendamento->delete();
         return response()->json();
     }
 
-    public  function getCustomerAppointments(int $customerId): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function getCustomerAppointments(int $customerId): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $appointments = Appointment::where('customer_id', $customerId)->where('scheduled_at','>=',now())->orderBy('scheduled_at')->get();
+        $appointments = Appointment::where('customer_id', $customerId)->where('scheduled_at', '>=', now())->orderBy('scheduled_at')->get();
         return AppointmentResource::collection($appointments);
     }
 

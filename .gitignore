@@ -25,3 +25,4 @@ Homestead.yaml
 Thumbs.db
 /evolution_instances
 .env.n8n
+.env.postgres

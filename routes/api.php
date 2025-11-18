@@ -19,6 +19,6 @@ Route::post('/customer', [CustomerController::class, 'createByInstance']);
 Route::get('/appointments/customer/{id}', [AppointmentController::class, 'getCustomerAppointments']);
 Route::post('/appointments/disponiveis', [AppointmentController::class, 'getAvailableSlots']);
 Route::post('/appointments', [AppointmentController::class, 'storeApi']);
-Route::delete('/appointments/{id}', [AppointmentController::class, 'deleteApi']);
+Route::delete('/appointments/', [AppointmentController::class, 'deleteApi']);
 Route::get('/services',[ServiceController::class,'getByEmpresa']);
 
