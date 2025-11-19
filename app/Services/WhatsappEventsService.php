@@ -35,6 +35,7 @@ class WhatsappEventsService
         $response = Http::withHeaders([
             'Content-Type' => 'application/json',
         ])->withBody(json_encode($newBody), 'application/json')
+            ->timeout(120)
             ->post($this->workFlowUrl);
 
         return;
