@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\AppointmentService;
+use App\Services\ScheduleMessageService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,6 +21,17 @@ class Appointment extends Model
         'created_by',
         'end_at',
     ];
+
+    protected $casts = [
+        'scheduled_at' => 'datetime',
+    ];
+
+    protected static function booted()
+    {
+        static::created(function ($appointment) {
+            (new ScheduleMessageService())->createAppointmentConfirmationMessage($appointment);
+        });
+    }
 
     public function service(): BelongsTo
     {

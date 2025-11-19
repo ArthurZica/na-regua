@@ -8,6 +8,7 @@ use App\Http\Requests\HorariosDisponiveisRequest;
 use App\Http\Resources\AppointmentResource;
 use App\Models\Appointment;
 use App\Services\AppointmentService;
+use App\Services\ScheduleMessageService;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -78,6 +79,7 @@ class AppointmentController extends Controller
         $service = \App\Models\Service::find($data['service_id']);
         $dataInicio = Carbon::parse($data['scheduled_at']);
         $data['end_at'] = $dataInicio->addMinutes($service->duration_minutes);
+
         return new AppointmentResource(Appointment::create($data));
     }
 
