@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Appointment;
+use App\Models\Instance;
 use App\Models\ScheduledMessage;
 
 class ScheduleMessageService
@@ -22,5 +23,24 @@ class ScheduleMessageService
             'scheduled_at' => $appointment->scheduled_at->subMinutes(30),
             'empresa_id' => $appointment->empresa_id,
         ]);
+    }
+
+    public function sendScheduledMessages()
+    {
+        $now = now();
+
+        $messages = ScheduledMessage::where('scheduled_at', '<=', $now)
+            ->get();
+
+        $whatsappService = new WhatsappService();
+
+        foreach ($messages as $message) {
+            $instanceId = Instance::where('empresa_id', $message->empresa_id)->where('connected',true)->first()->instance_id;
+            if(!$instanceId){
+                continue;
+            }
+            $whatsappService->sendMessage($message->customer->phone,$message->text,$instanceId);
+            $message->delete();
+        }
     }
 }
