@@ -66,6 +66,10 @@ class WhatsappEventsService
         $empresa = Empresa::find($instance->empresa_id);
         $services = Service::where('empresa_id',$empresa->id)->get();
         $jid = $body['data']['key']['remoteJid'];
+        if(str_contains($jid,'lid')){
+            $jid = $body['data']['key']['remoteJidAlt'];
+            $body['data']['key']['remoteJid'] = $jid;
+        }
         $phone = explode('@',$jid)[0];
         $customer = Customer::where('id_wpp',$jid)->where('empresa_id',$empresa->id)->first();
 
