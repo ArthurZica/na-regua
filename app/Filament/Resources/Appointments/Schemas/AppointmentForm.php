@@ -9,25 +9,31 @@ use Filament\Schemas\Schema;
 
 class AppointmentForm
 {
+    public static function schema(): array
+    {
+        return [
+            Select::make('service_id')
+                ->relationship('service', 'name')
+                ->translateLabel()
+                ->required(),
+
+            Select::make('user_id')
+                ->relationship('user', 'name')
+                ->translateLabel()
+                ->required(),
+
+            Select::make('customer_id')
+                ->relationship('customer', 'name')
+                ->translateLabel()
+                ->required(),
+
+            DateTimePicker::make('scheduled_at')
+                ->translateLabel()
+                ->required(),
+        ];
+    }
     public static function configure(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                Select::make('service_id')
-                    ->relationship('service', 'name')
-                    ->translateLabel()
-                    ->required(),
-                Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->translateLabel()
-                    ->required(),
-                Select::make('customer_id')
-                    ->relationship('customer', 'name')
-                    ->translateLabel()
-                    ->required(),
-                DateTimePicker::make('scheduled_at')
-                    ->translateLabel()
-                    ->required(),
-            ]);
+        return $schema->components(static::schema());
     }
 }

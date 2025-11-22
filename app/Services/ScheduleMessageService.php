@@ -39,7 +39,7 @@ class ScheduleMessageService
             if(!$instanceId){
                 continue;
             }
-            $whatsappService->sendMessage($message->customer->phone,$message->text,$instanceId);
+            $whatsappService->sendMessage($message->customer->id_wpp,$message->text,$instanceId);
             $message->delete();
         }
     }

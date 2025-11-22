@@ -50,15 +50,14 @@ class BarbeariaPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
-//                CalendarWidget::class
+                CalendarWidget::class
             ])
-//            ->plugin(
-//                FilamentFullCalendarPlugin::make()
-//
-//                    ->selectable()
-//                    ->editable()
-//
-//            )
+            ->plugin(
+                FilamentFullCalendarPlugin::make()
+                    ->selectable(true)
+                    ->editable(false)
+                    ->plugins(['dayGrid','timeGrid'])
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
