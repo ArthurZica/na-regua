@@ -14,8 +14,6 @@ services:
           - .env
         environment:
             WWWUSER: '${WWWUSER}'
-        volumes:
-            - '.:/var/www/html'
         networks:
             - sail
         depends_on:
@@ -26,8 +24,6 @@ services:
       env_file:
         - .env
       command: [ "php", "/var/www/html/artisan", "schedule:work" ]
-      volumes:
-        - .:/var/www/html
       depends_on:
         - mysql
     mysql:
