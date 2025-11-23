@@ -32,7 +32,10 @@ class Appointment extends Model
     {
         static::creating(function (Appointment $appointment) {
 
-            $appointment->empresa_id = \Filament\Facades\Filament::getTenant()->id;
+
+            if(!$appointment->empresa_id){
+                $appointment->empresa_id = \Filament\Facades\Filament::getTenant()->id;
+            }
             if(auth() !== null){
                 $appointment->created_by = auth()->id();
             }
