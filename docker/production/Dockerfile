@@ -1,16 +1,3 @@
-# ----- STAGE 1: Node build -----
-FROM node:20-alpine AS build
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-
-COPY . .
-RUN npm run build
-
-
-# ----- STAGE 2: PHP + Nginx -----
 FROM webdevops/php-nginx:8.4-alpine
 
 ENV APPLICATION_USER=application
@@ -19,15 +6,21 @@ ENV WEB_DOCUMENT_ROOT=/var/www/html/public
 
 WORKDIR /var/www/html
 
-# Copia a aplicação (exceto node_modules)
+# Copia projeto
 COPY . .
 
-# Copia o build gerado no stage 1
-COPY --from=build /app/public/build ./public/build
-
+# Composer primeiro
 USER root
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
+
+# Agora sim: Node/Vite (já com vendor existindo)
+RUN apk add --no-cache nodejs npm
+RUN npm install
+RUN npm run build
+
+
+# Permissões
 RUN chown -R application:application /var/www/html \
     && chmod -R 775 storage \
     && chmod -R 775 bootstrap/cache
