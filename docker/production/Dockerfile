@@ -1,3 +1,14 @@
+# ----- STAGE 1: Node build -----
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+RUN npm run build
+
 FROM webdevops/php-nginx:8.4-alpine
 ENV APPLICATION_USER=application
 ENV APPLICATION_GROUP=application
