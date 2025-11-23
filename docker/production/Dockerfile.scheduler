@@ -1,0 +1,24 @@
+FROM php:8.4-cli-alpine
+
+# Instala dependências do sistema
+RUN apk add --no-cache bash git zip unzip icu-dev libzip-dev
+
+# Instala extensões PHP necessárias
+RUN docker-php-ext-install intl zip
+
+# Instala Composer
+COPY composer.json composer.lock ./
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');" \
+    && composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+
+# Copia toda a aplicação
+WORKDIR /var/www/html
+COPY . .
+
+# Copia o entrypoint
+COPY docker/production/start-scheduler.sh /usr/local/bin/start-scheduler
+RUN chmod +x /usr/local/bin/start-scheduler
+
+ENTRYPOINT ["start-scheduler"]

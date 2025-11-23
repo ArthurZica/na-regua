@@ -9,10 +9,20 @@ class RolesSeeder extends Seeder
 {
     public function run(): void
     {
-        Role::insert([
-            ['nome' => 'Administrador'],
-            ['nome' => 'Gerente'],
+        Role::updateOrCreate(
+            ['id' => 1],
+            ['nome' => 'Administrador']
+        );
+
+        Role::updateOrCreate(
+            ['id' => 2],
+            ['nome' => 'Gerente']
+        );
+
+        Role::updateOrCreate(
+            ['id' => 3],
             ['nome' => 'Barbeiro']
-        ]);
+        );
     }
+
 }

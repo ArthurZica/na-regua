@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+echo "🔄 Limpando cache..."
+php artisan optimize:clear || true
+
+echo "🔄 Rodando migrations..."
+php artisan migrate --force || true
+
+echo "🔄 Rodando seeds..."
+php artisan db:seed || true
+
+echo "🚀 Otimizando Laravel..."
+php artisan optimize || true
+
+/opt/docker/bin/entrypoint.sh supervisord
