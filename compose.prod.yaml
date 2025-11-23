@@ -3,8 +3,6 @@ services:
         build:
             context: '.'
             dockerfile: ./docker/production/Dockerfile
-            args:
-                WWWGROUP: '${WWWGROUP}'
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -12,13 +10,13 @@ services:
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
         env_file:
           - .env
-        environment:
-            WWWUSER: '${WWWUSER}'
         networks:
             - sail
         depends_on:
-            - mysql
-            - redis
+          mysql:
+            condition: service_healthy
+          redis:
+            condition: service_started
     scheduler:
       image: serversideup/php:8.4-cli
       env_file:
@@ -27,7 +25,8 @@ services:
       networks:
         - sail
       depends_on:
-        - mysql
+        mysql:
+          condition: service_healthy
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
