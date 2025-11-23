@@ -8,6 +8,10 @@ services:
         ports:
             - '80:80'
             - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+        environment:
+          - APPLICATION_USER=application
+          - APPLICATION_GROUP=application
+          - WEB_DOCUMENT_ROOT=/var/www/html/public
         env_file:
           - .env
         networks:

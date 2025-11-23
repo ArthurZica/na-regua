@@ -19,4 +19,5 @@ RUN chmod +x /usr/local/bin/start-container
 
 RUN chown -R application:application /var/www/html
 
+USER application
 ENTRYPOINT ["start-container"]
