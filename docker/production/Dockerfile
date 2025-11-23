@@ -1,5 +1,6 @@
 FROM webdevops/php-nginx:8.4-alpine
-USER www-data
+ENV APPLICATION_USER=application
+ENV APPLICATION_GROUP=application
 # Define onde ficam os arquivos do Laravel
 ENV WEB_DOCUMENT_ROOT=/var/www/html/public
 
@@ -16,6 +17,6 @@ COPY docker/production/start-container /usr/local/bin
 
 RUN chmod +x /usr/local/bin/start-container
 
-RUN chown -R www-data:www-data /var/www/html
+RUN chown -R application:application /var/www/html
 
 ENTRYPOINT ["start-container"]
