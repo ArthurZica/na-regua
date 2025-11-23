@@ -16,4 +16,6 @@ COPY docker/production/start-container /usr/local/bin
 
 RUN chmod +x /usr/local/bin/start-container
 
+RUN chown -R application:application .
+
 ENTRYPOINT ["start-container"]
