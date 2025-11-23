@@ -33,7 +33,9 @@ class Appointment extends Model
         static::creating(function (Appointment $appointment) {
 
             $appointment->empresa_id = \Filament\Facades\Filament::getTenant()->id;
-            $appointment->created_by = auth()->id();
+            if(auth()->id()){
+                $appointment->created_by = auth()->id();
+            }
 
             // Se service_id estiver preenchido, calcula end_at
             if ($appointment->service_id) {
