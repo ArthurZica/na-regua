@@ -104,6 +104,7 @@ services:
     n8n:
       container_name: n8n
       image: n8nio/n8n:latest
+      command: --log-bin-trust-function-creators=1
       ports:
         - "5678:5678"
       env_file:
