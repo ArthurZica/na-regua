@@ -38,6 +38,7 @@ class WhatsappEventsService
             ->timeout(120)
             ->post($this->workFlowUrl);
 
+        Log::info("resposta n8n",[$response]);
         return;
     }
 
