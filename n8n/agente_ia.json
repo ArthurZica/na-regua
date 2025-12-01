@@ -5,95 +5,43 @@
       "parameters": {
         "options": {}
       },
-      "id": "9f1c9e79-92c4-4e33-9222-12655fc6079c",
+      "id": "72d144a5-8447-4625-9eef-d348925390d9",
       "name": "Loop Over Items3",
       "type": "n8n-nodes-base.splitInBatches",
       "position": [
-        1040,
-        720
+        448,
+        256
       ],
       "typeVersion": 3
-    },
-    {
-      "parameters": {
-        "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"messages\"]\n}"
-      },
-      "id": "9fa6b91a-d171-412f-9a54-493ca8a3adc6",
-      "name": "OutputParser1",
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "position": [
-        656,
-        896
-      ],
-      "typeVersion": 1.2
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Whatsapp message to be splitted and formated: {{ $json.output }}",
-        "hasOutputParser": true,
-        "messages": {
-          "messageValues": [
-            {
-              "message": "={\n  \"messages\": [\n    \"Por favor, gere a saída no seguinte formato JSON: {\\\"messages\\\": [\\\"splitedMessage\\\", \\\"splitedMessage\\\", \\\"splitedMessage\\\"]}\",\n    \"As mensagens devem ser divididas de forma natural, mantendo EXATAMENTE o conteúdo original. Certifique-se de que a resposta siga exatamente essa estrutura, incluindo os colchetes e as aspas.\",\n    \"Jamais separe uma mensagem vazia. Cada mensagem deve ter entre 200 e 300 caracteres, sem cortar informações, pois é uma conversa de chat.\",\n    \"**CRÍTICO:** Mantenha o conteúdo ORIGINAL da mensagem. Não adicione frases extras, explicações, saudações adicionais ou qualquer conteúdo que não estava na mensagem original.\",\n    \"**CRÍTICO:** Se a mensagem original for curta e objetiva, mantenha-a curta e objetiva. Não 'enfeite' ou 'melhore' o texto.\",\n    \"**CRÍTICO:** Não transforme mensagens simples em múltiplas mensagens. Se o conteúdo couber em uma mensagem, mantenha em uma só.\",\n    \"**NOVA REGRA:** Se a mensagem contiver LISTAS, PREÇOS ou MÚLTIPLAS OPÇÕES, divida em tópicos formatados usando:\\n• EMOJIS para seções\\n• *negrito* para títulos\\n• Formato: • Item 1\\n• Item 2\",\n    \"**NOVA REGRA:** Máximo 3-4 itens por mensagem em listas. Se tiver mais itens, divida em múltiplas mensagens.\",\n    \"Certifique-se de que a resposta siga exatamente essa estrutura: *negrito* (substitua '**' por '*') não made nada em negrito remova todos '*'; ~tachado~ (caso seja algo excluído/alterado); _itálico_ (extremamente raro).\",\n    \"Tudo o que for link, pode colocar entre \\\"`\\\", ou seja, na seguinte formatação: `www.link.com.br`. Use sempre essa formatação para todos os links.\",\n    \"Substitua essas palavras: Prazer por: feliz em conhecer\",\n    \"**EXEMPLOS DE COMO DEVE SER:**\",\n    \"**Entrada:** 'Olá! Sou o Henrique 😊 Vou te apresentar nossos agentes através de simulações realistas. Qual seu nome e email?'\",\n    \"**Saída CORRETA:** {\\\"messages\\\": [\\\"Olá! Sou o Henrique 😊 Vou te apresentar nossos agentes através de simulações realistas. Qual seu nome e email?\\\"]}\",\n    \"**Entrada:** 'Perfeito, João! Email joao@email.com está correto? Qual agente quer testar? 🧔 Barbearia 🦷 Odontologia'\",\n    \"**Saída CORRETA:** {\\\"messages\\\": [\\\"Perfeito, João! Email joao@email.com está correto? Qual agente quer testar? 🧔 Barbearia 🦷 Odontologia\\\"]}\",\n    \"**Entrada:** 'Excelente! Vou te conectar com Barbearia. Lá você vivenciará uma simulação realista. No final, voltamos!'\",\n    \"**Saída CORRETA:** {\\\"messages\\\": [\\\"Excelente! Vou te conectar com Barbearia. Lá você vivenciará uma simulação realista. No final, voltamos!\\\"]}\",\n    \"**Entrada COM LISTA:** 'Temos Cortes: Social R$35, Degradê R$40, Navalhado R$45, Infantil R$30. E Barbas: Aparar R$20, Completa R$30, Sobrancelha R$15'\",\n    \"**Saída CORRETA COM TÓPICOS:** {\\\"messages\\\": [\\\"💇 *Cortes de Cabelo*\\n• Social: R$ 35 (40min)\\n• Degradê: R$ 40 (50min)\\n• Navalhado: R$ 45 (60min)\\\", \\\"✂️ *Serviços de Barba*\\n• Aparar: R$ 20 (20min)\\n• Completa: R$ 30 (30min)\\n• Sobrancelha: R$ 15 (15min)\\\"]}\",\n    \"**NUNCA faça isso:** Não adicione 'Fico no aguardo!', 'Pode me dizer?', 'Por favor', 'Assim que eu tiver essas informações' ou qualquer frase extra.\"\n  ]\n}"
-            }
-          ]
-        }
-      },
-      "id": "8cc06a87-2742-4d09-8ead-8e554959e594",
-      "name": "Parser  Chain",
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "position": [
-        464,
-        688
-      ],
-      "typeVersion": 1.4
     },
     {
       "parameters": {
         "promptType": "define",
         "text": "={{ $('Mensagem Completa').item.json.mensagem_completa }}",
         "options": {
-          "systemMessage": "=# IDENTIDADE\nVocê é **Na-Regua**, atendente virtual da **{{ $('Dados').item.json.empresa.name }}**.\n\n**Missão:** Agendar serviços, esclarecer dúvidas e converter leads em clientes satisfeitos.\n\n---\n\n# DADOS DA SESSÃO\n\n**Cliente cadastrado:** {{ $('Dados').item.json.cliente && $('Dados').item.json.cliente.name ? \"sim\" : \"não\" }}  \n**Nome do cliente:** {{ $('Dados').item.json.cliente && $('Dados').item.json.cliente.name ? $('Dados').item.json.cliente.name : \"não cadastrado\" }}  \n**Data/Hora atual: {{ $now }} \n**Serviços disponíveis:** {{ JSON.stringify($('Dados').item.json.services) }}\n**Endereço da empresa: ** {{ $('Dados').item.json.empresa.endereco }}\n\n---\n\n# REGRAS DE OURO\n\n## 1. Identificação do Cliente\n- ✅ **Cliente cadastrado** (`cliente_cadastrado = true`):\n  - Cumprimente usando o nome: *\"Opa, {{ nome_cliente }}! Tudo certo?\"*\n  - NUNCA pergunte o nome novamente\n  \n- ❌ **Cliente não cadastrado** (`cliente_cadastrado = false`):\n  - Primeira mensagem: *\"E aí! Sou o Na-Regua 👋 Qual seu nome?\"*\n  - Assim que receber o nome → **SEMPRE** acione `cadastra_cliente`\n  - Só prossiga após confirmar cadastro\n\n## 2. Comunicação\n- **Uma pergunta por vez** (evite sobrecarga cognitiva)\n- **Mensagens curtas** (máximo 2-3 linhas quando possível)\n- **Emojis:** Use 1-2 por mensagem (👍 ✂️ 📅 ⏰)\n- **Tom:** Profissional + descontraído (típico de barbearia moderna)\n- **Tratamento:** Sempre informal, mas respeitoso\n\n## 3. Escopo de Atendimento\n### ✅ PODE ATENDER:\n- Agendamentos e reagendamentos\n- Informações sobre serviços e preços\n- Disponibilidade de horários\n- Formas de pagamento (Pix, cartão, dinheiro)\n- Localização e funcionamento\n\n### ❌ DEVE TRANSFERIR PARA HUMANO:\n- Reclamações complexas\n- Pedidos de reembolso\n- Dúvidas técnicas sobre produtos\n- Assuntos pessoais/sensíveis\n- Qualquer tema fora do escopo de barbearia\n\n**Protocolo de transferência:**  \n*\"Vou te passar para um dos nossos atendentes para resolver isso melhor. Protocolo: 221214\"*\n\n# TOOLS\n\n## Configuração JSON:\n\n```json\n{\n  \"tools\": [\n    {\n      \"name\": \"Cerebro\",\n      \"usage\": \"Use quando o usuário fizer perguntas que não tem a resposta nesse prompt\"\n    },\n    {\n      \"name\": \"cadastra_cliente\",\n      \"usage\": \"Use assim que o cliente responder o nome dele. Quando cliente_cadastrado for 'não'\"\n    },\n    {\n      \"name\": \"busca_horarios\",\n      \"usage\": \"Quando o cliente enviar a data que deseja marcar um horário e o serviço, busque os horários disponíveis\"\n    },\n    {\n      \"name\": \"agenda_horario\",\n      \"usage\": \"Quando o cliente tiver confirmado data, hora e serviço que deseja, acione essa tool para marcar um agendamento\"\n    },\n    {\n      \"name\": \"busca_agendamentos_cliente\",\n      \"usage\": \"Quando o cliente solicitar 'meus agendamentos', 'meus horários' ou similar\"\n    }\n  ]\n}\n```\n\n## Detalhamento de uso:\n\n### 1. `Cerebro`\n**Acionar quando:** Cliente fizer pergunta que não está neste prompt (ex: \"Vocês vendem shampoo?\")\n\n### 2. `cadastra_cliente`\n**Acionar quando:**\n- `cliente_cadastrado = false` E\n- Cliente informou o nome\n\n**Validações antes de acionar:**\n- Nome tem pelo menos 2 caracteres\n- Nome não contém apenas números\n\n### 3. `busca_horarios`\n**Acionar quando:**\n- Cliente informou SERVIÇO + DATA\n- Exemplo: \"Quero cortar cabelo amanhã\"\n\n**Parâmetros esperados:**\n```json\n{\n  \"data\": \"DD/MM/YYYY\",\n  \"servico_id\": \"id_do_servico\"\n}\n```\n\n### 4. `agenda_horario`\n**Acionar quando:**\n- Cliente confirmou SERVIÇO + DATA + HORÁRIO\n- Exemplo: \"Confirma? Sim!\"\n\n**Após agendar:**\n- Confirmar com mensagem personalizada\n- Informar endereço da barbearia\n- Perguntar se precisa de mais algo\n\n### 5. `busca_agendamentos_cliente`\n**Acionar quando:**\n- Cliente perguntar: \"Quais meus horários?\", \"Tenho agendamento?\", \"O que tenho marcado?\"\n\n**Formato de resposta:**\n```\nSeus agendamentos, {{ nome_cliente }}:\n\n📅 18/11 às 15h - Corte + Barba\n📅 25/11 às 10h - Corte Simples\n\nPrecisa reagendar algum? \n```\n\n---\n\n# EXEMPLOS DE CONVERSAÇÃO\n\n## Exemplo 1: Cliente Novo\n\n**Cliente:** Oi, preciso cortar o cabelo\n\n**Na-Regua:** E aí! Sou o Na-Regua 👋 Qual seu nome?\n\n**Cliente:** Carlos\n\n[SISTEMA ACIONA TOOL: cadastra_cliente()]\n\n**Na-Regua:** Prazer, Carlos! Nossos serviços são X?\n\n**Cliente:** Tem vaga hoje às 15h?\n\n[SISTEMA ACIONA: busca_horarios(data: hoje, servico: corte)]\n\n**Na-Regua:** Perfeito! Às 15h está disponível sim ✅  \nConfirma pra mim?  \nCorte - R$ 50 - Hoje às 15h\n\n**Cliente:** Confirmo!\n\n[SISTEMA ACIONA TOOL: agenda_horario()]\n\n**Na-Regua:** Agendado, Carlos! 🎉  \nTe esperamos hoje às 15h na {{ $('Dados').item.json.empresa.name }}  \n📍 [Endereço]  \n💳 Aceitamos Pix, cartão e dinheiro  \n\nPosso ajudar em mais algo?\n\n---\n\n## Exemplo 2: Cliente Cadastrado\n\n**Lucas:** Oi, quais os serviços disponíveis?\n\n**Na-Regua:** Opa, Lucas! Tudo certo? 👍  \nTemos:\n• Corte - R$ 50\n• Barba - R$ 40  \n• Corte + Barba - R$ 80\n\nQual te interessa?\n\n**Lucas:** Corte + Barba, dia 20\n\n[SISTEMA ACIONA: busca_horarios(data: 20/11, servico: corte+barba)]\n\n**Na-Regua:** Beleza! Dia 20/11 tenho:\n⏰ 10h\n⏰ 14h\n⏰ 16h\n\nQual prefere?\n\n**Lucas:** 14h tá bom\n\n\n[SISTEMA ACIONA TOOL: agenda_horario()]\n\n**Na-Regua:** Confirmado, Lucas! ✅  \n20/11 às 14h - Corte + Barba (R$ 80)  \n\nTe mando lembrete um dia antes, ok? 📲\n\n---\n\n## Exemplo 3: Consulta de Agendamentos\n\n**Lucas:** Quais horários eu tenho marcado?\n\n[SISTEMA ACIONA: busca_agendamentos_cliente]\n\n**Na-Regua:** Seus agendamentos, Lucas:\n\n📅 18/11 às 15h - Corte  \n📅 25/11 às 10h - Barba\n\nPrecisa reagendar ou cancelar algum?\n\n---\n\n## Exemplo 4: Horário Indisponível\n\n**Cliente:** Quero agendar amanhã às 9h\n\n[SISTEMA ACIONA: busca_horarios → Retorna vazio]\n\n**Na-Regua:** Amanhã às 9h já está ocupado 😕  \nMas tenho:\n⏰ 10h\n⏰ 11h30\n⏰ 14h\n\nAlgum desses serve?\n\n---\n\nExemplo 4: Cancelamento de Agendamento\n\nLucas: Quero cancelar meu horário de corte do dia 25.\n\n[SISTEMA ACIONA busca_agendamentos_cliente]\nRecebe lista de agendamentos do cliente, e coleta id do agendamento que ele deseja cancelar, verificar data informada pelo cliente e busca o agendamento correspondente.\n[SISTEMA ACIONA: cancela_agendamento\n→ parâmetros: {\"id\": \"<id_de_agendamento_coletado>\"}]\n\nNa-Regua: Certo, Lucas!\nSeu agendamento de Corte no dia 25/11 às 10h foi cancelado com sucesso.\n\nDeseja marcar outro horário ou verificar sua agenda?\n\n---\n\n# TRATAMENTO DE ERROS\n\n## Situação: Cliente desiste no meio do agendamento\n\n**Cliente:** Deixa pra lá, vou pensar\n\n**Na-Regua:** Tranquilo! Quando decidir, é só chamar 👍  \nEstamos aqui das 9h às 19h\n\n---\n\n## Situação: Cliente reclama de atendimento anterior\n\n**Cliente:** O último corte ficou ruim!\n\n**Na-Regua:** Sinto muito por isso, {{ $('Dados').item.json.cliente.name }}! 😕  \nVou te passar para nossa gerência resolver isso melhor.  \nProtocolo: 221214\n\n---\n\n## Situação: Cliente pergunta algo fora do escopo\n\n**Cliente:** Vocês fazem design de sobrancelha?\n\n[SISTEMA ACIONA: Cerebro]\n\n**Na-Regua:** [Resposta baseada na busca do Cerebro]\n\n*Se Cerebro não tiver resposta:*\n\n**Na-Regua:** Não tenho essa informação agora, mas posso te passar para um atendente que saiba. Quer?\n\n---\n\n# VALIDAÇÕES IMPORTANTES\n\nAntes de acionar qualquer tool, verifique:\n\n1. **cadastra_cliente:**\n   - Nome informado?\n   - Nome válido (não vazio, não apenas números)?\n\n2. **busca_horarios:**\n   - Serviço foi especificado?\n   - Data está no formato correto?\n   - Data não está no passado?\n\n3. **agenda_horario:**\n   - Todas as informações coletadas (serviço, data, hora)?\n   - Cliente confirmou explicitamente?\n\n4. **busca_agendamentos_cliente:**\n   - Cliente está cadastrado?\n\n5. **cancela_agendamento:**\n   - Os agendamentos do cliente foram buscados?\n   - O id do agendamento foi coletado?\n\n---\n\n# INSTRUÇÕES FINAIS\n\n**Antes de CADA resposta:**\n1. Verifique se o cliente está cadastrado\n2. Identifique qual a intenção da mensagem\n3. Determine qual tool (se algum) precisa ser acionado\n4. Valide os dados antes de acionar tools\n5. Responda de forma clara e objetiva\n\n**NUNCA:**\n- Revele sua cadeia de pensamento\n- Mostre dados técnicos (IDs, códigos internos)\n- Peça dados técnicos para o cliente (id de serviço e afins), sempre busque nos dados disponiveis. Exemplo:\nCliente solicitou serviço x, busque na lista de serviços o id do serviço de nome x.\n- Faça múltiplas perguntas na mesma mensagem\n- Invente informações não fornecidas\n- Confirme o agendamento sem chamar a tool agenda_horario\n- Pergunte o nome do cliente caso Cliente cadastrado for = sim.\n\n**SEMPRE:**\n- Use o nome do cliente (se cadastrado)\n- Mantenha tom profissional mas descontraído\n- Confirme agendamentos antes de finalizar\n- Pergunte se pode ajudar em mais algo ao final\n- Que o cliente confirmar o agendamento acione a tool agenda_horario().\n- Após chamar agenda horário oelte as informações retornadas e retorne uma mensagem em linguagem natural para o cliente.\n\n---\n\n**Data/Hora de referência:** {{ $now.weekdayLong }}, {{ $now.format('dd/MM/yyyy') }} às {{ $now.hour.toString().padStart(2,'0') }}:{{ $now.minute.toString().padStart(2,'0') }}"
+          "systemMessage": "=# IDENTIDADE\nVocê é **Na-Regua**, atendente virtual da **{{ $('Dados').item.json.empresa.name }}**.\n\n**Missão:** Agendar serviços, esclarecer dúvidas e converter leads em clientes satisfeitos.\n\n---\n\n# DADOS DA SESSÃO\n\n**Cliente cadastrado:** {{ $('Dados').item.json.cliente && $('Dados').item.json.cliente.name ? \"sim\" : \"não\" }}  \n**Nome do cliente:** {{ $('Dados').item.json.cliente && $('Dados').item.json.cliente.name ? $('Dados').item.json.cliente.name : \"não cadastrado\" }}  \n**Data/Hora atual:** {{ $now }}  \n**Serviços disponíveis:** {{ JSON.stringify($('Dados').item.json.services) }}  \n**Endereço da empresa:** {{ $('Dados').item.json.empresa.endereco }}\n\n---\n\n# REGRAS DE OURO\n\n## 1. Identificação do Cliente\n- ✅ **Cliente cadastrado** (`cliente_cadastrado = true`):\n  - NUNCA pergunte o nome novamente\n  - Use o nome apenas quando relevante ao contexto\n  \n- ❌ **Cliente não cadastrado** (`cliente_cadastrado = false`):\n  - Primeira mensagem: *\"E aí! Sou o Na-Regua 👋 Qual seu nome?\"*\n  - Assim que receber o nome → **SEMPRE** acione `cadastra_cliente`\n  - Só prossiga após confirmar cadastro\n\n## 2. Comunicação\n\n### **SAUDAÇÕES - REGRA CRÍTICA:**\n- **Usar saudação APENAS:**\n  - Na primeira mensagem da conversa\n  - Após 30+ minutos de inatividade\n  \n- **NÃO usar saudações:**\n  - Entre mensagens consecutivas\n  - Durante uma conversa ativa\n  - Ao responder perguntas diretas\n\n**❌ EVITE:**\n- \"Opa, Henrique!\"\n- \"Tudo certo?\"\n- \"E aí, Carlos!\"\n- Repetir o nome em toda mensagem\n\n**✅ PREFIRA (durante conversa ativa):**\n- Ir direto ao ponto\n- Responder objetivamente\n- Usar o nome apenas quando necessário para clareza\n\n### **Diretrizes Gerais:**\n- **Uma pergunta por vez** (evite sobrecarga cognitiva)\n- **Mensagens curtas** (máximo 2-3 linhas quando possível)\n- **Emojis:** Use 1-2 por mensagem (👍 ✂️ 📅 ⏰)\n- **Tom:** Profissional + descontraído (típico de barbearia moderna)\n- **Tratamento:** Sempre informal, mas respeitoso\n\n## 3. Escopo de Atendimento\n### ✅ PODE ATENDER:\n- Agendamentos e reagendamentos\n- Informações sobre serviços e preços\n- Disponibilidade de horários\n- Formas de pagamento (Pix, cartão, dinheiro)\n- Localização e funcionamento\n\n### ❌ DEVE TRANSFERIR PARA HUMANO:\n- Reclamações complexas\n- Pedidos de reembolso\n- Dúvidas técnicas sobre produtos\n- Assuntos pessoais/sensíveis\n- Qualquer tema fora do escopo de barbearia\n\n**Protocolo de transferência:**  \n*\"Vou te passar para um dos nossos atendentes para resolver isso melhor. Protocolo: 221214\"*\n\n---\n\n# TOOLS\n\n## Configuração JSON:\n\n```json\n{\n  \"tools\": [\n    {\n      \"name\": \"Cerebro\",\n      \"usage\": \"Use quando o usuário fizer perguntas que não tem a resposta nesse prompt\"\n    },\n    {\n      \"name\": \"cadastra_cliente\",\n      \"usage\": \"Use assim que o cliente responder o nome dele. Quando cliente_cadastrado for 'não'\"\n    },\n    {\n      \"name\": \"busca_horarios\",\n      \"usage\": \"Quando o cliente enviar a data que deseja marcar um horário e o serviço, busque os horários disponíveis\"\n    },\n    {\n      \"name\": \"agenda_horario\",\n      \"usage\": \"Quando o cliente tiver confirmado data, hora e serviço que deseja, acione essa tool para marcar um agendamento\"\n    },\n    {\n      \"name\": \"busca_agendamentos_cliente\",\n      \"usage\": \"Quando o cliente solicitar 'meus agendamentos', 'meus horários' ou similar\"\n    },\n    {\n      \"name\": \"cancela_agendamento\",\n      \"usage\": \"Quando o cliente solicitar cancelamento de um agendamento específico\"\n    }\n  ]\n}\n```\n\n## Detalhamento de uso:\n\n### 1. `Cerebro`\n**Acionar quando:** Cliente fizer pergunta que não está neste prompt (ex: \"Vocês vendem shampoo?\")\n\n### 2. `cadastra_cliente`\n**Acionar quando:**\n- `cliente_cadastrado = false` E\n- Cliente informou o nome\n\n**Validações antes de acionar:**\n- Nome tem pelo menos 2 caracteres\n- Nome não contém apenas números\n\n### 3. `busca_horarios`\n**Acionar quando:**\n- Cliente informou SERVIÇO + DATA\n- Exemplo: \"Quero cortar cabelo amanhã\"\n\n**Parâmetros esperados:**\n```json\n{\n  \"data\": \"DD/MM/YYYY\",\n  \"servico_id\": \"id_do_servico\"\n}\n```\n\n### 4. `agenda_horario`\n**Acionar quando:**\n- Cliente confirmou SERVIÇO + DATA + HORÁRIO\n- Exemplo: \"Confirma? Sim!\"\n\n**Após agendar:**\n- Confirmar com mensagem personalizada\n- Informar endereço da barbearia\n- Perguntar se precisa de mais algo\n\n### 5. `busca_agendamentos_cliente`\n**Acionar quando:**\n- Cliente perguntar: \"Quais meus horários?\", \"Tenho agendamento?\", \"O que tenho marcado?\"\n\n**Formato de resposta:**\n```\nSeus agendamentos:\n\n📅 18/11 às 15h - Corte + Barba\n📅 25/11 às 10h - Corte Simples\n\nPrecisa reagendar algum?\n```\n\n### 6. `cancela_agendamento`\n**Acionar quando:**\n- Cliente solicitar cancelamento\n- Coletar id do agendamento via `busca_agendamentos_cliente`\n\n---\n\n# EXEMPLOS DE CONVERSAÇÃO\n\n## Exemplo 1: Cliente Novo (Primeira Interação)\n\n**Cliente:** Oi, preciso cortar o cabelo\n\n**Na-Regua:** E aí! Sou o Na-Regua 👋 Qual seu nome?\n\n**Cliente:** Carlos\n\n[SISTEMA ACIONA: cadastra_cliente()]\n\n**Na-Regua:** Prazer, Carlos! Nossos serviços são:\n• Corte - R$ 50\n• Barba - R$ 40\n• Corte + Barba - R$ 80\n\nQual te interessa?\n\n**Cliente:** Tem vaga hoje às 15h?\n\n[SISTEMA ACIONA: busca_horarios(data: hoje, servico: corte)]\n\n**Na-Regua:** Às 15h está disponível sim ✅  \nConfirma pra mim?  \nCorte - R$ 50 - Hoje às 15h\n\n**Cliente:** Confirmo!\n\n[SISTEMA ACIONA: agenda_horario()]\n\n**Na-Regua:** Agendado! 🎉  \nTe esperamos hoje às 15h  \n📍 {{ $('Dados').item.json.empresa.endereco }}  \n💳 Aceitamos Pix, cartão e dinheiro  \n\nPosso ajudar em mais algo?\n\n---\n\n## Exemplo 2: Cliente Cadastrado (Conversa Ativa)\n\n**Lucas:** Quais os serviços disponíveis?\n\n**Na-Regua:**  \n• Corte - R$ 50\n• Barba - R$ 40  \n• Corte + Barba - R$ 80\n\nQual te interessa?\n\n**Lucas:** Corte + Barba, dia 20\n\n[SISTEMA ACIONA: busca_horarios(data: 20/11, servico: corte+barba)]\n\n**Na-Regua:** Dia 20/11 tenho:\n⏰ 10h\n⏰ 14h\n⏰ 16h\n\nQual prefere?\n\n**Lucas:** 14h tá bom\n\n[SISTEMA ACIONA: agenda_horario()]\n\n**Na-Regua:** Confirmado! ✅  \n20/11 às 14h - Corte + Barba (R$ 80)  \n\nTe mando lembrete um dia antes 📲\n\n**Lucas:** Valeu!\n\n**Na-Regua:** 👍\n\n---\n\n## Exemplo 3: Consulta de Agendamentos\n\n**Lucas:** Quais horários eu tenho marcado?\n\n[SISTEMA ACIONA: busca_agendamentos_cliente]\n\n**Na-Regua:** Seus agendamentos:\n\n📅 18/11 às 15h - Corte  \n📅 25/11 às 10h - Barba\n\nPrecisa reagendar ou cancelar algum?\n\n---\n\n## Exemplo 4: Horário Indisponível\n\n**Cliente:** Quero agendar amanhã às 9h\n\n[SISTEMA ACIONA: busca_horarios → Retorna vazio]\n\n**Na-Regua:** Amanhã às 9h já está ocupado 😕  \nMas tenho:\n⏰ 10h\n⏰ 11h30\n⏰ 14h\n\nAlgum serve?\n\n---\n\n## Exemplo 5: Cancelamento de Agendamento\n\n**Lucas:** Quero cancelar meu horário de corte do dia 25\n\n[SISTEMA ACIONA: busca_agendamentos_cliente]\n\n**Na-Regua:** Você tem:\n📅 25/11 às 10h - Corte\n\nÉ esse que quer cancelar?\n\n**Lucas:** Sim\n\n[SISTEMA ACIONA: cancela_agendamento(id: xxx)]\n\n**Na-Regua:** Cancelado com sucesso ✅  \nSeu horário de Corte do dia 25/11 às 10h foi liberado.\n\nQuer marcar outro dia?\n\n---\n\n# TRATAMENTO DE ERROS\n\n## Situação: Cliente desiste no meio do agendamento\n\n**Cliente:** Deixa pra lá, vou pensar\n\n**Na-Regua:** Tranquilo! Quando decidir, é só chamar 👍  \nEstamos aqui das 9h às 19h\n\n---\n\n## Situação: Cliente reclama de atendimento anterior\n\n**Cliente:** O último corte ficou ruim!\n\n**Na-Regua:** Sinto muito por isso 😕  \nVou te passar para nossa gerência resolver isso melhor.  \nProtocolo: 221214\n\n---\n\n## Situação: Cliente pergunta algo fora do escopo\n\n**Cliente:** Vocês fazem design de sobrancelha?\n\n[SISTEMA ACIONA: Cerebro]\n\n**Na-Regua:** [Resposta baseada na busca do Cerebro]\n\n*Se Cerebro não tiver resposta:*\n\n**Na-Regua:** Não tenho essa informação agora. Posso te passar para um atendente que saiba, ok?\n\n---\n\n# VALIDAÇÕES IMPORTANTES\n\nAntes de acionar qualquer tool, verifique:\n\n1. **cadastra_cliente:**\n   - Nome informado?\n   - Nome válido (não vazio, não apenas números)?\n\n2. **busca_horarios:**\n   - Serviço foi especificado?\n   - Data está no formato correto?\n   - Data não está no passado?\n\n3. **agenda_horario:**\n   - Todas as informações coletadas (serviço, data, hora)?\n   - Cliente confirmou explicitamente?\n\n4. **busca_agendamentos_cliente:**\n   - Cliente está cadastrado?\n\n5. **cancela_agendamento:**\n   - Os agendamentos do cliente\n\n---\n\n# INSTRUÇÕES FINAIS\n\n**Antes de CADA resposta:**\n1. Verifique se o cliente está cadastrado\n2. Identifique qual a intenção da mensagem\n3. Determine qual tool (se algum) precisa ser acionado\n4. Valide os dados antes de acionar tools\n5. Responda de forma clara e objetiva\n\n**NUNCA:**\n- Revele sua cadeia de pensamento\n- Mostre dados técnicos (IDs, códigos internos)\n- Peça dados técnicos para o cliente (id de serviço e afins), sempre busque nos dados disponiveis. Exemplo:\nCliente solicitou serviço x, busque na lista de serviços o id do serviço de nome x.\n- Faça múltiplas perguntas na mesma mensagem\n- Invente informações não fornecidas\n- Confirme o agendamento sem chamar a tool agenda_horario\n- Pergunte o nome do cliente caso Cliente cadastrado for = sim.\n\n**SEMPRE:**\n- Use o nome do cliente (se cadastrado)\n- Mantenha tom profissional mas descontraído\n- Confirme agendamentos antes de finalizar\n- Pergunte se pode ajudar em mais algo ao final\n- Que o cliente confirmar o agendamento acione a tool agenda_horario().\n- Após chamar agenda horário oelte as informações retornadas e retorne uma mensagem em linguagem natural para o cliente.\n\n---\n\n**Data/Hora de referência:** {{ $now.weekdayLong }}, {{ $now.format('dd/MM/yyyy') }} às {{ $now.hour.toString().padStart(2,'0') }}:{{ $now.minute.toString().padStart(2,'0') }}"
         }
       },
-      "id": "2021e583-9c2c-4524-9694-d65ed5cdde37",
+      "id": "a2297d76-6516-490c-a043-b413ce6bc467",
       "name": "Atendente",
       "type": "@n8n/n8n-nodes-langchain.agent",
       "position": [
-        -1072,
-        736
+        -1664,
+        272
       ],
       "typeVersion": 1.6,
       "alwaysOutputData": false
     },
     {
       "parameters": {
-        "fieldToSplitOut": "output.messages",
-        "options": {
-          "destinationFieldName": "output"
-        }
-      },
-      "id": "3d56126e-d1e4-4810-a257-2d0195ec0d5a",
-      "name": "Split de Mensagem",
-      "type": "n8n-nodes-base.splitOut",
-      "position": [
-        816,
-        720
-      ],
-      "typeVersion": 1
-    },
-    {
-      "parameters": {
         "amount": 1
       },
-      "id": "32fd6bb0-b0ac-46c2-83e6-b16e68d69191",
+      "id": "d473d1b8-a0dc-4e92-87ce-030f6b59c888",
       "name": "1 segundo",
       "type": "n8n-nodes-base.wait",
       "position": [
-        1536,
-        736
+        944,
+        272
       ],
       "webhookId": "4a5e4d35-6193-42fd-be5b-8ee4626a38da",
       "typeVersion": 1.1
@@ -103,17 +51,17 @@
         "operation": "delete",
         "key": "={{ $('Dados').item.json.Telefone }}"
       },
-      "id": "5502bdd4-8d57-4435-988d-067ffcf5f589",
+      "id": "927b5738-b13f-4202-858d-a268d29620ef",
       "name": "Delete Memory",
       "type": "n8n-nodes-base.redis",
       "position": [
-        592,
-        464
+        0,
+        0
       ],
       "typeVersion": 1,
       "credentials": {
         "redis": {
-          "id": "TDIfsMiufcO2Qhmz",
+          "id": "DH12ClcEYJqSE0Nk",
           "name": "Redis account"
         }
       }
@@ -121,16 +69,16 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "748b1a61-1be1-4016-a2c5-86c35dc9ea55",
+        "path": "prod",
         "responseMode": "lastNode",
         "options": {}
       },
-      "id": "53052a81-ec48-45c9-98d4-02a60bb06176",
+      "id": "e93a83cd-528b-443a-993b-6412002cd93d",
       "name": "Webhook EVO",
       "type": "n8n-nodes-base.webhook",
       "position": [
-        -4448,
-        768
+        -4768,
+        320
       ],
       "webhookId": "748b1a61-1be1-4016-a2c5-86c35dc9ea55",
       "typeVersion": 2
@@ -241,12 +189,12 @@
         },
         "options": {}
       },
-      "id": "caa012cf-db07-4b57-89c9-bff0ecb02c42",
+      "id": "a49929fb-2b36-4f48-b47b-78d1b4188dea",
       "name": "Switch1",
       "type": "n8n-nodes-base.switch",
       "position": [
-        -3824,
-        752
+        -4416,
+        288
       ],
       "typeVersion": 3
     },
@@ -274,12 +222,12 @@
         },
         "options": {}
       },
-      "id": "bbb9b1f7-fa84-4d23-8b07-5deb74dd83f0",
+      "id": "849cda4d-9ed3-4fa3-a0eb-61d37dd43195",
       "name": "Compara Get Memory1",
       "type": "n8n-nodes-base.if",
       "position": [
-        -1984,
-        752
+        -2720,
+        320
       ],
       "typeVersion": 2.2
     },
@@ -290,17 +238,17 @@
         "messageData": "={{ $('Dados').item.json.message.content }}",
         "tail": true
       },
-      "id": "9674c9da-c00e-4002-8bc0-f339327255b0",
+      "id": "3292e36a-84e0-475e-b043-2fe423eb965f",
       "name": "Text Memory1",
       "type": "n8n-nodes-base.redis",
       "position": [
-        -3088,
-        512
+        -3920,
+        64
       ],
       "typeVersion": 1,
       "credentials": {
         "redis": {
-          "id": "TDIfsMiufcO2Qhmz",
+          "id": "DH12ClcEYJqSE0Nk",
           "name": "Redis account"
         }
       }
@@ -312,17 +260,17 @@
         "messageData": "={{ $json.content.parts[0].text }}",
         "tail": true
       },
-      "id": "6e8f6d82-30ae-4e5a-b2c1-118d406149a4",
+      "id": "4f398b70-cab7-425c-a40c-3eea8e170713",
       "name": "Audio Memory1",
       "type": "n8n-nodes-base.redis",
       "position": [
-        -3008,
-        768
+        -3696,
+        336
       ],
       "typeVersion": 1,
       "credentials": {
         "redis": {
-          "id": "TDIfsMiufcO2Qhmz",
+          "id": "DH12ClcEYJqSE0Nk",
           "name": "Redis account"
         }
       }
@@ -347,28 +295,14 @@
         },
         "options": {}
       },
-      "id": "21ea55f6-5c7d-4c79-9893-b9546df0c461",
+      "id": "83df0f02-b657-41e8-9b9c-835d8acb3b80",
       "name": "Edit Fields8",
       "type": "n8n-nodes-base.set",
       "position": [
-        -2144,
-        752
+        -2864,
+        320
       ],
       "typeVersion": 3.4
-    },
-    {
-      "parameters": {
-        "amount": 2
-      },
-      "id": "d8e1dd31-6d9b-4563-b2f4-3a0d09330c99",
-      "name": "Wait3",
-      "type": "n8n-nodes-base.wait",
-      "position": [
-        -2448,
-        752
-      ],
-      "webhookId": "80d26b60-caf5-4797-8b10-78b641ef2640",
-      "typeVersion": 1.1
     },
     {
       "parameters": {
@@ -376,17 +310,17 @@
         "key": "={{ $('Dados').item.json.Telefone }}",
         "options": {}
       },
-      "id": "41340406-394a-47da-8286-cb63e8df7c96",
+      "id": "eb0143c9-1573-4569-b12f-1ffa37025252",
       "name": "Get Memory 1",
       "type": "n8n-nodes-base.redis",
       "position": [
-        -2576,
-        752
+        -3520,
+        336
       ],
       "typeVersion": 1,
       "credentials": {
         "redis": {
-          "id": "TDIfsMiufcO2Qhmz",
+          "id": "DH12ClcEYJqSE0Nk",
           "name": "Redis account"
         }
       }
@@ -397,17 +331,17 @@
         "key": "={{ $('Dados').item.json.Telefone }}",
         "options": {}
       },
-      "id": "f2f04106-9d97-4b7f-b3ec-9063492d371c",
+      "id": "70187d7d-6eee-47a6-ad83-741584b424c9",
       "name": "Get Memory 2",
       "type": "n8n-nodes-base.redis",
       "position": [
-        -2288,
-        752
+        -3024,
+        320
       ],
       "typeVersion": 1,
       "credentials": {
         "redis": {
-          "id": "TDIfsMiufcO2Qhmz",
+          "id": "DH12ClcEYJqSE0Nk",
           "name": "Redis account"
         }
       }
@@ -416,12 +350,12 @@
       "parameters": {
         "jsCode": "const redis1 = JSON.parse($json.Redis1);\nconst redis2 = JSON.parse($json.Redis2);\n\nconst combinadoSemDuplicatas = Array.from(new Set([...redis1, ...redis2]));\n\nconst mensagem = combinadoSemDuplicatas.join(\" \");\n\nreturn [{ json: { mensagem_completa: mensagem } }];"
       },
-      "id": "df60cc59-fa29-415c-b6e0-7a63f3c80dff",
+      "id": "1adfaec7-8653-4987-b206-694d1d329de5",
       "name": "Mensagem Completa",
       "type": "n8n-nodes-base.code",
       "position": [
-        -1760,
-        736
+        -2496,
+        304
       ],
       "typeVersion": 2
     },
@@ -434,12 +368,12 @@
           "mimeType": "audio/ogg"
         }
       },
-      "id": "a6658e24-13b4-4aea-84d5-001308e37a1b",
+      "id": "80d6cbd2-81a5-4972-8ac5-780fb284da64",
       "name": "Convert to File",
       "type": "n8n-nodes-base.convertToFile",
       "position": [
-        -3456,
-        784
+        -4048,
+        336
       ],
       "typeVersion": 1.1
     },
@@ -457,12 +391,12 @@
         },
         "options": {}
       },
-      "id": "d6ae68e9-599c-42eb-84da-c74d27765c2f",
+      "id": "beda6b52-c4d2-46ab-949a-b29d61f90b7f",
       "name": "Edit Fields",
       "type": "n8n-nodes-base.set",
       "position": [
-        -3616,
-        784
+        -4208,
+        336
       ],
       "typeVersion": 3.4
     },
@@ -558,12 +492,12 @@
         },
         "options": {}
       },
-      "id": "cc012943-2973-4ff8-b8e0-a7f2f99e5984",
+      "id": "f697bd26-fd7c-4e40-9369-54cde17843a1",
       "name": "Dados",
       "type": "n8n-nodes-base.set",
       "position": [
-        -4256,
-        768
+        -4608,
+        320
       ],
       "typeVersion": 3.4
     },
@@ -572,37 +506,17 @@
         "modelName": "models/gemini-2.5-flash-lite",
         "options": {}
       },
-      "id": "6124d203-3318-49aa-99db-cbd451f354bc",
-      "name": "Google Gemini Chat Model4",
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "position": [
-        416,
-        896
-      ],
-      "typeVersion": 1,
-      "credentials": {
-        "googlePalmApi": {
-          "id": "OJwmmNSQfE1kY8hb",
-          "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "modelName": "models/gemini-2.5-flash-lite",
-        "options": {}
-      },
-      "id": "676c0295-6c31-4cd0-8a90-4be3f097563f",
+      "id": "4ea8aa05-6642-48d4-9bd9-2fefa94125eb",
       "name": "Google Gemini Chat Model1",
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "position": [
-        -1024,
-        1232
+        -1616,
+        768
       ],
       "typeVersion": 1,
       "credentials": {
         "googlePalmApi": {
-          "id": "OJwmmNSQfE1kY8hb",
+          "id": "Wf2kBMDBiT5HVmqY",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
@@ -615,12 +529,12 @@
           "systemMessage": "=# FAQ Barbearia X\nP é igual à pergunta e R é igual à resposta\n\nP: Qual endereço?\nR: Rua Exemplo, 123 - Centro - Cidade/Estado\n\nP: Que horas abrem/fecham?\nR: Seg-Sex: 9h-19h, Sáb: 8h-17h, Dom: Fechado\n\nP: Aceitam cartão?\nR: Sim, crédito, débito, Pix e dinheiro\n\nP: Qual o pix?\nR: O pagamento é feito presencialmente.\n\nP: Como faço o pagamento?\nR: O pagamento é feito presencialmente.\n\nP: Preciso agendar?\nR: Recomendamos agendar, mas atendemos por ordem de chegada também"
         }
       },
-      "id": "aef10fee-b48a-4f52-86b0-a7ce4cc348d8",
+      "id": "fbb1d849-e473-4c52-abe7-b3683aef6623",
       "name": "Cerébro",
       "type": "@n8n/n8n-nodes-langchain.agentTool",
       "position": [
-        -1040,
-        1088
+        -1632,
+        624
       ],
       "typeVersion": 2.2
     },
@@ -638,23 +552,23 @@
         },
         "options": {}
       },
-      "id": "6e193620-f9ce-4667-a957-704e03566297",
+      "id": "096caeb6-35d5-499b-9a15-5d5192bab97a",
       "name": "dados",
       "type": "n8n-nodes-base.set",
       "position": [
-        -4256,
-        1136
+        -4864,
+        1120
       ],
       "typeVersion": 3.4
     },
     {
       "parameters": {},
-      "id": "0486001d-cee1-4b7f-b387-dfe193e83822",
+      "id": "d3001a06-4ce2-48b3-a23e-e657032db579",
       "name": "Error Trigger",
       "type": "n8n-nodes-base.errorTrigger",
       "position": [
-        -4496,
-        1136
+        -5104,
+        1120
       ],
       "typeVersion": 1
     },
@@ -681,12 +595,12 @@
         },
         "options": {}
       },
-      "id": "f4f5397a-e1f6-4ebc-b03c-6d0a62601352",
+      "id": "e1b968aa-1a23-44a3-bccd-8361dd78e9ca",
       "name": "HTTP Request",
       "type": "n8n-nodes-base.httpRequest",
       "position": [
-        1280,
-        720
+        688,
+        256
       ],
       "typeVersion": 4.3
     },
@@ -714,12 +628,12 @@
         },
         "options": {}
       },
-      "id": "7bd69c19-8234-48c6-b4ca-9762f6139000",
+      "id": "34985119-c705-4977-8d30-12b2a01687ca",
       "name": "cadastra_cliente",
       "type": "n8n-nodes-base.httpRequestTool",
       "position": [
-        -160,
-        864
+        -752,
+        400
       ],
       "typeVersion": 4.3
     },
@@ -747,12 +661,12 @@
         },
         "options": {}
       },
-      "id": "956dd789-0c42-4f1d-9026-70d5784b5a97",
+      "id": "4415b439-ade4-41cb-a227-6c46c081cfa4",
       "name": "busca_horarios",
       "type": "n8n-nodes-base.httpRequestTool",
       "position": [
-        -320,
-        928
+        -912,
+        464
       ],
       "typeVersion": 4.3
     },
@@ -768,17 +682,17 @@
         "inputType": "binary",
         "options": {}
       },
-      "id": "0f152e19-35a1-4359-a16e-e706e03a07b1",
+      "id": "5d3014f8-231a-40ce-9f45-ef08ba2dccf4",
       "name": "Transcribe a recording",
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "position": [
-        -3232,
-        800
+        -3872,
+        336
       ],
       "typeVersion": 1,
       "credentials": {
         "googlePalmApi": {
-          "id": "OJwmmNSQfE1kY8hb",
+          "id": "Wf2kBMDBiT5HVmqY",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
@@ -789,12 +703,12 @@
         "url": "=http://laravel.test/api/appointments/customer/{{ $('Dados').item.json.cliente.id }}",
         "options": {}
       },
-      "id": "679fc646-c413-427d-ab29-7c54d018374a",
+      "id": "88f73569-37f1-4b47-af3d-08b8b9a27303",
       "name": "busca_agendamentos_cliente",
       "type": "n8n-nodes-base.httpRequestTool",
       "position": [
-        -608,
-        928
+        -1200,
+        464
       ],
       "typeVersion": 4.3
     },
@@ -805,17 +719,17 @@
         "sessionTTL": 3600,
         "contextWindowLength": 4
       },
-      "id": "e3c8300c-ae70-4941-8a98-6c8178a2e92d",
+      "id": "e0d5ea6e-ec58-4ad1-ba8b-c3b74b535afc",
       "name": "Redis Chat Memory1",
       "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
       "position": [
-        -1056,
-        944
+        -1648,
+        480
       ],
       "typeVersion": 1.5,
       "credentials": {
         "redis": {
-          "id": "TDIfsMiufcO2Qhmz",
+          "id": "DH12ClcEYJqSE0Nk",
           "name": "Redis account"
         }
       }
@@ -834,12 +748,12 @@
         },
         "options": {}
       },
-      "id": "fd8db023-93bd-4771-b2cc-d465626e93d3",
+      "id": "9ae2bb4f-9277-495d-88ee-2f9938e5b2ca",
       "name": "mensagem_completa",
       "type": "n8n-nodes-base.set",
       "position": [
-        -1552,
-        736
+        -2320,
+        304
       ],
       "typeVersion": 3.4
     },
@@ -853,17 +767,17 @@
         },
         "options": {}
       },
-      "id": "67a98282-c323-48e0-937e-c6a787b6d482",
+      "id": "0cf9472a-0c73-4f1c-b89e-7669478dcd44",
       "name": "OpenAI Chat Model",
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "position": [
-        -1200,
-        944
+        -1792,
+        480
       ],
       "typeVersion": 1.2,
       "credentials": {
         "openAiApi": {
-          "id": "p1RhSwfL4O7G4opR",
+          "id": "sRN7eKeNguptwMAA",
           "name": "OpenAi account"
         }
       }
@@ -878,113 +792,20 @@
           "parameters": [
             {
               "name": "id",
-              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', ``, 'string') }}"
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `id do agendamento que será cancelado, buscar a partir do relacionamento com o resultado de busca_agendamentos_cliente e a mensagem digitada pelo cliente.`, 'string') }}"
             }
           ]
         },
         "options": {}
       },
-      "id": "31e8afc4-fdd8-4604-99f9-4f66652db5fe",
+      "id": "707f5100-6dc8-49d3-bea7-221b848764ef",
       "name": "cancela_agendamento",
       "type": "n8n-nodes-base.httpRequestTool",
       "position": [
-        -768,
-        976
+        -1360,
+        512
       ],
       "typeVersion": 4.3
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "mode": "list",
-          "value": "ms8CNZfsIzgktzA2",
-          "cachedResultUrl": "/workflow/ms8CNZfsIzgktzA2",
-          "cachedResultName": "Workflow cria agendamento"
-        },
-        "workflowInputs": {
-          "value": {
-            "empresa_id": "={{ $('Dados').item.json.empresa.id }}",
-            "service_id": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('service_id', `id do serviço que o usuário quer agendar um horário`, 'number') }}",
-            "customer_id": "={{ $('Webhook EVO').item.json.body.customer.id }}",
-            "schedule_at": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('schedule_at', `data e hora de agendamento no formato Y-m-d HH:mm. exemplo: 2025-11-18 14:00`, 'string') }}",
-            "agendamento_key": "={{ $('Webhook EVO').item.json.body.data.key.remoteJid }}_agendamento"
-          },
-          "schema": [
-            {
-              "id": "service_id",
-              "type": "number",
-              "display": true,
-              "removed": false,
-              "required": false,
-              "displayName": "service_id",
-              "defaultMatch": false,
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "schedule_at",
-              "type": "string",
-              "display": true,
-              "removed": false,
-              "required": false,
-              "displayName": "schedule_at",
-              "defaultMatch": false,
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "user_id",
-              "display": true,
-              "removed": false,
-              "required": false,
-              "displayName": "user_id",
-              "defaultMatch": false,
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "customer_id",
-              "type": "number",
-              "display": true,
-              "removed": false,
-              "required": false,
-              "displayName": "customer_id",
-              "defaultMatch": false,
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "agendamento_key",
-              "type": "string",
-              "display": true,
-              "removed": false,
-              "required": false,
-              "displayName": "agendamento_key",
-              "defaultMatch": false,
-              "canBeUsedToMatch": true
-            },
-            {
-              "id": "empresa_id",
-              "type": "number",
-              "display": true,
-              "removed": false,
-              "required": false,
-              "displayName": "empresa_id",
-              "defaultMatch": false,
-              "canBeUsedToMatch": true
-            }
-          ],
-          "mappingMode": "defineBelow",
-          "matchingColumns": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
-      },
-      "id": "b81719b6-42cf-4b57-80c7-fe61113dab7f",
-      "name": "agenda_horario_old",
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "position": [
-        -144,
-        1184
-      ],
-      "typeVersion": 2.2
     },
     {
       "parameters": {
@@ -1014,14 +835,90 @@
         },
         "options": {}
       },
-      "id": "f0b47b72-fb61-43ac-9ebe-69193737f66e",
+      "id": "c12c3329-21d8-45b8-ab08-4a00ae69a505",
       "name": "agenda_horario",
       "type": "n8n-nodes-base.httpRequestTool",
       "position": [
-        -480,
-        912
+        -1072,
+        448
       ],
       "typeVersion": 4.3
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Whatsapp message to be splitted and formated: {{ $json.output }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "={\n  \"messages\": [\n    \"Por favor, gere a saída no seguinte formato JSON: {\\\"messages\\\": [\\\"splitedMessage\\\", \\\"splitedMessage\\\", \\\"splitedMessage\\\"]}\",\n    \"As mensagens devem ser divididas de forma natural, mantendo EXATAMENTE o conteúdo original. Certifique-se de que a resposta siga exatamente essa estrutura, incluindo os colchetes e as aspas.\",\n    \"Jamais separe uma mensagem vazia. Cada mensagem deve ter entre 200 e 300 caracteres, sem cortar informações, pois é uma conversa de chat.\",\n    \"**CRÍTICO:** Mantenha o conteúdo ORIGINAL da mensagem. Não adicione frases extras, explicações, saudações adicionais ou qualquer conteúdo que não estava na mensagem original.\",\n    \"**CRÍTICO:** Se a mensagem original for curta e objetiva, mantenha-a curta e objetiva. Não 'enfeite' ou 'melhore' o texto.\",\n    \"**CRÍTICO:** Não transforme mensagens simples em múltiplas mensagens. Se o conteúdo couber em uma mensagem, mantenha em uma só.\",\n    \"**NOVA REGRA:** Se a mensagem contiver LISTAS, PREÇOS ou MÚLTIPLAS OPÇÕES, divida em tópicos formatados usando:\\n• EMOJIS para seções\\n• *negrito* para títulos\\n• Formato: • Item 1\\n• Item 2\",\n    \"**NOVA REGRA:** Máximo 3-4 itens por mensagem em listas. Se tiver mais itens, divida em múltiplas mensagens.\",\n    \"Certifique-se de que a resposta siga exatamente essa estrutura: *negrito* (substitua '**' por '*') não made nada em negrito remova todos '*'; ~tachado~ (caso seja algo excluído/alterado); _itálico_ (extremamente raro).\",\n    \"Tudo o que for link, pode colocar entre \\\"`\\\", ou seja, na seguinte formatação: `www.link.com.br`. Use sempre essa formatação para todos os links.\",\n    \"Substitua essas palavras: Prazer por: feliz em conhecer\",\n    \"**EXEMPLOS DE COMO DEVE SER:**\",\n    \"**Entrada:** 'Olá! Sou o Henrique 😊 Vou te apresentar nossos agentes através de simulações realistas. Qual seu nome e email?'\",\n    \"**Saída CORRETA:** {\\\"messages\\\": [\\\"Olá! Sou o Henrique 😊 Vou te apresentar nossos agentes através de simulações realistas. Qual seu nome e email?\\\"]}\",\n    \"**Entrada:** 'Perfeito, João! Email joao@email.com está correto? Qual agente quer testar? 🧔 Barbearia 🦷 Odontologia'\",\n    \"**Saída CORRETA:** {\\\"messages\\\": [\\\"Perfeito, João! Email joao@email.com está correto? Qual agente quer testar? 🧔 Barbearia 🦷 Odontologia\\\"]}\",\n    \"**Entrada:** 'Excelente! Vou te conectar com Barbearia. Lá você vivenciará uma simulação realista. No final, voltamos!'\",\n    \"**Saída CORRETA:** {\\\"messages\\\": [\\\"Excelente! Vou te conectar com Barbearia. Lá você vivenciará uma simulação realista. No final, voltamos!\\\"]}\",\n    \"**Entrada COM LISTA:** 'Temos Cortes: Social R$35, Degradê R$40, Navalhado R$45, Infantil R$30. E Barbas: Aparar R$20, Completa R$30, Sobrancelha R$15'\",\n    \"**Saída CORRETA COM TÓPICOS:** {\\\"messages\\\": [\\\"💇 *Cortes de Cabelo*\\n• Social: R$ 35 (40min)\\n• Degradê: R$ 40 (50min)\\n• Navalhado: R$ 45 (60min)\\\", \\\"✂️ *Serviços de Barba*\\n• Aparar: R$ 20 (20min)\\n• Completa: R$ 30 (30min)\\n• Sobrancelha: R$ 15 (15min)\\\"]}\",\n    \"**NUNCA faça isso:** Não adicione 'Fico no aguardo!', 'Pode me dizer?', 'Por favor', 'Assim que eu tiver essas informações' ou qualquer frase extra.\",\n    \"**NÃO fique comprimentando a cada mensagem, isso so deve acontecer se o cumprimento vier como imput**\"\n  ]\n}"
+            }
+          ]
+        }
+      },
+      "id": "7cdf9113-a51a-4da9-8cf1-cca07a0c6c6e",
+      "name": "Parser  Chain1",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        -288,
+        256
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.messages",
+        "options": {
+          "destinationFieldName": "output"
+        }
+      },
+      "id": "bfb1825f-65bf-4538-9bc2-23691362ed8f",
+      "name": "Split de Mensagem1",
+      "type": "n8n-nodes-base.splitOut",
+      "position": [
+        144,
+        256
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"messages\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"messages\"]\n}"
+      },
+      "id": "516cbf47-9dd0-407b-b8bc-610298941fdf",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [
+        -160,
+        464
+      ],
+      "typeVersion": 1.3
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "id": "c557e503-2ed3-46ff-8a3f-7c55f972174d",
+      "name": "OpenAI Chat Model1",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        -400,
+        464
+      ],
+      "typeVersion": 1.2,
+      "credentials": {
+        "openAiApi": {
+          "id": "sRN7eKeNguptwMAA",
+          "name": "OpenAi account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1035,22 +932,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "Wait3": {
-      "main": [
-        [
-          {
-            "node": "Get Memory 2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "dados": {
-      "main": [
-        []
       ]
     },
     "Switch1": {
@@ -1075,8 +956,7 @@
             "type": "main",
             "index": 0
           }
-        ],
-        []
+        ]
       ]
     },
     "Cerébro": {
@@ -1110,7 +990,7 @@
             "index": 0
           },
           {
-            "node": "Parser  Chain",
+            "node": "Parser  Chain1",
             "type": "main",
             "index": 0
           }
@@ -1154,7 +1034,7 @@
       "main": [
         [
           {
-            "node": "Wait3",
+            "node": "Get Memory 2",
             "type": "main",
             "index": 0
           }
@@ -1216,34 +1096,12 @@
         ]
       ]
     },
-    "OutputParser1": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "Parser  Chain",
-            "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Parser  Chain": {
+    "Parser  Chain1": {
       "main": [
         [
           {
-            "node": "Split de Mensagem",
+            "node": "Split de Mensagem1",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Simple Memory1": {
-      "ai_memory": [
-        [
-          {
-            "node": "formata_data",
-            "type": "ai_memory",
             "index": 0
           }
         ]
@@ -1327,23 +1185,23 @@
         ]
       ]
     },
-    "Split de Mensagem": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "mensagem_completa": {
       "main": [
         [
           {
             "node": "Atendente",
             "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Parser  Chain1",
+            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -1360,9 +1218,15 @@
         ]
       ]
     },
-    "agenda_horario_old": {
-      "ai_tool": [
-        []
+    "Split de Mensagem1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "Compara Get Memory1": {
@@ -1398,22 +1262,22 @@
         ]
       ]
     },
-    "Google Gemini Chat Model1": {
-      "ai_languageModel": [
+    "Structured Output Parser": {
+      "ai_outputParser": [
         [
           {
-            "node": "Cerébro",
-            "type": "ai_languageModel",
+            "node": "Parser  Chain1",
+            "type": "ai_outputParser",
             "index": 0
           }
         ]
       ]
     },
-    "Google Gemini Chat Model4": {
+    "Google Gemini Chat Model1": {
       "ai_languageModel": [
         [
           {
-            "node": "Parser  Chain",
+            "node": "Cerébro",
             "type": "ai_languageModel",
             "index": 0
           }
@@ -1436,11 +1300,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "2e4aba18-0210-4077-ac66-70f1d78d2f9b",
+  "versionId": "ced52332-8806-4442-b1d1-6d53f25a704a",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "80a92fa6947ed43600537b0a5636c7dcdb403105cac8170bf42331bead36ebaa"
+    "instanceId": "792c8c0f4dd7c55d7f06ae41a60c37d68f401d6aae5551d790e5ce552156ed1f"
   },
-  "id": "gtmWlKe4l27J4N2s",
+  "id": "lnT5keuk92rdzLeC",
   "tags": []
 }
