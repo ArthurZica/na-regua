@@ -1,61 +1,177 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 💈 Na Régua
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema web integrado a chatbot para gestão automatizada de barbearias.
 
-## About Laravel
+O **Na Régua** é uma plataforma SaaS desenvolvida para modernizar a gestão de barbearias de pequeno porte, integrando um sistema web administrativo com um chatbot inteligente no WhatsApp.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Projeto desenvolvido como Trabalho de Conclusão de Curso (TCC) em Sistemas de Informação.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 📌 Problema
 
-## Learning Laravel
+Barbearias que utilizam apenas o WhatsApp para agendamentos enfrentam:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Conflitos de horário  
+- Respostas demoradas  
+- Dificuldade de organização  
+- Sobrecarga do profissional  
+- Falta de histórico estruturado  
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+O Na Régua automatiza e organiza todo esse processo.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🚀 Solução
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+A solução integra:
 
-### Premium Partners
+- 🌐 Plataforma Web Administrativa (SaaS)
+- 🤖 Chatbot Inteligente no WhatsApp
+- 🔄 Sincronização em tempo real
+- 🗂 Gestão completa de clientes e agenda
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🏗 Arquitetura
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🔹 Sistema Web
 
-## Code of Conduct
+- PHP (Laravel)
+- Arquitetura MVC
+- Painel administrativo com Filament
+- Banco de dados MySQL
+- Cache e memória com Redis
+- Arquitetura multi-tenant (multiempresa)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Funcionalidades:
 
-## Security Vulnerabilities
+- Cadastro de barbearias
+- Cadastro de clientes
+- Cadastro de serviços (valor e duração)
+- Cadastro de funcionários
+- Gerenciamento de agendamentos
+- Controle de acesso por papéis (RBAC)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+### 🔹 Chatbot
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Orquestração com n8n
+- Integração via Evolution API (WhatsApp)
+- LLM (GPT-4.1 Mini)
+- Transcrição de áudio (Google Gemini)
+- Memória conversacional com Redis
+
+Capacidades:
+
+- Cadastro automático de cliente
+- Consulta de horários disponíveis
+- Agendamento
+- Reagendamento
+- Cancelamento
+- Confirmação automática
+
+---
+
+### 🔹 Infraestrutura
+
+- VPS Linux
+- Docker
+- MySQL
+- Redis
+- n8n
+
+---
+
+## 🔐 Controle de Acesso (RBAC)
+
+- **Administrador** → Controle total do sistema
+- **Gerente** → Gerencia uma ou mais barbearias
+- **Barbeiro** → Visualiza e gerencia apenas seus atendimentos
+
+---
+
+## 🔄 Fluxo de Funcionamento
+
+1. Cliente envia mensagem no WhatsApp
+2. Webhook recebe evento
+3. n8n processa mensagem
+4. LLM interpreta intenção
+5. Ferramentas HTTP executam ações na API
+6. Banco de dados é atualizado
+7. Cliente recebe resposta
+8. Painel administrativo reflete a alteração em tempo real
+
+---
+
+## 🧪 Metodologia
+
+O projeto foi desenvolvido utilizando **Design Science Research (DSR)**:
+
+1. Identificação do problema
+2. Definição dos objetivos
+3. Design e desenvolvimento
+4. Demonstração em ambiente real
+5. Avaliação
+6. Comunicação dos resultados
+
+---
+
+## 📊 Resultados da Avaliação
+
+Avaliação preliminar com 13 participantes:
+
+- Facilidade de uso: **4,46 / 5**
+- Clareza das respostas: **4,54 / 5**
+- Simplicidade do agendamento: **4,92 / 5**
+- Confirmação de agendamento: **5,00 / 5**
+- Satisfação geral: **9,15 / 10**
+- 100% afirmaram que usariam novamente
+
+---
+## 🧠 Tecnologias Utilizadas
+
+- PHP
+- Laravel
+- Filament
+- MySQL
+- Redis
+- n8n
+- Docker
+- Evolution API (Whatsapp)
+- Large Language Models (LLMs)
+
+---
+
+## 🎯 Objetivos
+
+- Reduzir conflitos de agendamento
+- Automatizar comunicação com clientes
+- Melhorar eficiência operacional
+- Demonstrar viabilidade de IA em pequenos negócios
+- Oferecer solução escalável no modelo SaaS
+
+---
+
+## ⚠️ Aviso
+
+Este projeto possui caráter acadêmico e experimental.  
+Para uso comercial, recomenda-se reforço em:
+
+- Segurança
+- Escalabilidade
+- Monitoramento
+- Conformidade com LGPD
+
+---
+
+## 📄 Trabalho Acadêmico
+
+**Desenvolvimento de um sistema Web integrado a chatbot para gestão de barbearias**
+
+Curso: Sistemas de Informação  
+Instituição: PUC Minas  
+Ano: 2025
+
+
