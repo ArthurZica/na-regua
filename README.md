@@ -7,7 +7,7 @@ O **Na Régua** é uma plataforma SaaS desenvolvida para modernizar a gestão de
 Projeto desenvolvido como Trabalho de Conclusão de Curso (TCC) em Sistemas de Informação.
 
 ---
-## 🖼 Imagens
+## 📸 Imagens
 
 ![Painel de controle do sistema](./docs/images/painel_v2.png)
 
