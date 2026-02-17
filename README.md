@@ -154,18 +154,6 @@ Avaliação preliminar com 13 participantes:
 
 ---
 
-## ⚠️ Aviso
-
-Este projeto possui caráter acadêmico e experimental.  
-Para uso comercial, recomenda-se reforço em:
-
-- Segurança
-- Escalabilidade
-- Monitoramento
-- Conformidade com LGPD
-
----
-
 ## 📄 Trabalho Acadêmico
 
 **Desenvolvimento de um sistema Web integrado a chatbot para gestão de barbearias**
@@ -173,5 +161,6 @@ Para uso comercial, recomenda-se reforço em:
 Curso: Sistemas de Informação  
 Instituição: PUC Minas  
 Ano: 2025
+Acesso: https://bib.pucminas.br/acervo/571572
 
 
